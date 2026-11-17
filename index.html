@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>ForgeUrBody</title>
+<style>
+:root{--bg:#0a1424;--surface:#12203a;--surface2:#1a2b4a;--surface3:#223755;--border:#1e3050;--border2:#2e4570;--text:#e8eef7;--muted:#7a8ba5;--muted2:#5a6b85;--red:#e63946;--red-hover:#ff4757;--blue:#3a7bd5;--green:#2ecc71;--yellow:#f39c12;--radius:14px}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{font:15px/1.5 -apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;padding-bottom:calc(70px + env(safe-area-inset-bottom))}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input,select,textarea{font-family:inherit;font-size:15px;color:var(--text);background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;width:100%;outline:none;transition:border-color .2s}
+input:focus,select:focus,textarea:focus{border-color:var(--red)}
+textarea{resize:vertical;min-height:80px}
+header{position:sticky;top:0;z-index:50;background:rgba(10,20,36,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:calc(12px + env(safe-area-inset-top)) 16px 12px;display:flex;align-items:center;gap:12px}
+.logo{font-weight:900;font-size:20px;letter-spacing:-.5px;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.logo-mark{width:32px;height:32px;background:var(--red);border-radius:8px;display:grid;place-items:center;font-size:18px;font-weight:900;color:#fff;box-shadow:0 4px 20px rgba(230,57,70,.4)}
+.logo span{color:var(--red)}
+.streak{margin-left:auto;font-size:12px;color:var(--muted);background:var(--surface);padding:6px 10px;border-radius:20px;border:1px solid var(--border);display:flex;align-items:center;gap:4px}
+nav{position:fixed;bottom:0;left:0;right:0;z-index:50;background:rgba(10,20,36,.96);backdrop-filter:blur(12px);border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:8px 4px calc(8px + env(safe-area-inset-bottom))}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;border-radius:10px;font-size:10px;font-weight:600;color:var(--muted);transition:all .2s;letter-spacing:.3px;text-transform:uppercase}
+.nav-btn .ico{font-size:20px;line-height:1}
+.nav-btn.active{color:var(--red)}
+.nav-btn.active .ico{transform:scale(1.1)}
+main{padding:16px;max-width:680px;margin:0 auto}
+.section{display:none;animation:fadein .3s ease}
+.section.active{display:block}
+@keyframes fadein{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+h1{font-size:22px;font-weight:900;text-transform:uppercase;letter-spacing:-.5px;margin-bottom:4px}
+h2{font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:.3px;margin:20px 0 12px;color:var(--text);display:flex;align-items:center;gap:8px}
+h2::before{content:'';width:4px;height:16px;background:var(--red);border-radius:2px}
+h3{font-size:14px;font-weight:700;margin-bottom:6px}
+p.lead{color:var(--muted);font-size:13px;margin-bottom:16px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px}
+.card-hero{background:linear-gradient(135deg,var(--surface2) 0%,var(--surface) 100%);border:1px solid var(--border2);border-radius:var(--radius);padding:18px;margin-bottom:16px;position:relative;overflow:hidden}
+.card-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--red),transparent)}
+.btn{background:var(--surface3);border:1px solid var(--border2);border-radius:10px;padding:12px 18px;font-weight:700;font-size:14px;color:var(--text);transition:all .15s;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn:hover{border-color:var(--red);color:#fff}
+.btn-primary{background:var(--red);border-color:var(--red);color:#fff;box-shadow:0 4px 16px rgba(230,57,70,.3)}
+.btn-primary:hover{background:var(--red-hover);border-color:var(--red-hover);color:#fff}
+.btn-block{display:flex;width:100%;justify-content:center}
+.btn-sm{padding:8px 12px;font-size:12px;border-radius:8px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+@media(max-width:480px){.form-row{grid-template-columns:1fr}}
+.form-group{margin-bottom:12px}
+.form-group label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:6px}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.grid-2{grid-template-columns:1fr 1fr}
+@media(max-width:480px){.grid{grid-template-columns:1fr}}
+.tile{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;cursor:pointer;transition:all .2s}
+.tile:hover{border-color:var(--red);transform:translateY(-2px)}
+.stat-big{font-size:32px;font-weight:900;letter-spacing:-1px;line-height:1.1}
+.stat-label{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:700}
+.stat-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center}
+.bar{height:8px;background:var(--surface3);border-radius:99px;overflow:hidden;margin:6px 0}
+.bar-fill{height:100%;background:linear-gradient(90deg,var(--red),#ff6b6b);border-radius:99px;transition:width .4s}
+.pills{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:12px;scrollbar-width:none}
+.pills::-webkit-scrollbar{display:none}
+.pill{flex-shrink:0;padding:8px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:99px;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;cursor:pointer;transition:all .15s;white-space:nowrap}
+.pill.active{background:var(--red);color:#fff;border-color:var(--red)}
+.list-item{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:8px;display:flex;align-items:center;gap:12px}
+.list-item-content{flex:1;min-width:0}
+.list-item-title{font-weight:700;font-size:14px}
+.list-item-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.list-item-actions{display:flex;gap:6px;flex-shrink:0}
+.badge{display:inline-block;padding:3px 8px;border-radius:6px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px}
+.badge-red{background:rgba(230,57,70,.15);color:var(--red)}
+.badge-blue{background:rgba(58,123,213,.15);color:var(--blue)}
+.badge-green{background:rgba(46,204,113,.15);color:var(--green)}
+.badge-yellow{background:rgba(243,156,18,.15);color:var(--yellow)}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px)}
+.modal-overlay.open{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border2);border-radius:20px 20px 0 0;width:100%;max-width:680px;max-height:85vh;overflow-y:auto;padding:20px;padding-bottom:calc(20px + env(safe-area-inset-bottom));animation:slideup .25s ease}
+@keyframes slideup{from{transform:translateY(100%)}to{transform:none}}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.modal-title{font-size:18px;font-weight:900;text-transform:uppercase;letter-spacing:-.3px}
+.modal-close{width:32px;height:32px;border-radius:50%;background:var(--surface2);display:grid;place-items:center;font-size:18px;color:var(--muted)}
+.toast{position:fixed;bottom:calc(80px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%) translateY(100px);background:var(--red);color:#fff;padding:12px 20px;border-radius:99px;font-weight:700;font-size:13px;z-index:200;transition:transform .3s ease;box-shadow:0 8px 24px rgba(230,57,70,.4);max-width:calc(100% - 32px);text-align:center}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.empty{text-align:center;padding:40px 20px;color:var(--muted)}
+.empty .ico{font-size:48px;margin-bottom:12px;opacity:.5}
+.empty-title{font-weight:700;margin-bottom:6px;color:var(--text)}
+.empty-text{font-size:13px}
+.tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.tag{font-size:10px;padding:3px 7px;background:var(--surface3);border-radius:6px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.3px}
+.instruction{background:var(--surface2);border-radius:10px;padding:12px;margin:8px 0;font-size:13px;line-height:1.6;border-left:3px solid var(--red)}
+.instruction strong{color:var(--red)}
+.data-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:14px}
+.data-row:last-child{border-bottom:none}
+.data-row .label{color:var(--muted)}
+.data-row .value{font-weight:700}
+.macro-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:10px 0}
+.macro-box{background:var(--surface2);border-radius:8px;padding:8px 4px;text-align:center;border:1px solid var(--border)}
+.macro-val{font-size:15px;font-weight:900;color:var(--text)}
+.macro-lbl{font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:700}
+@media(min-width:768px){body{padding-bottom:0}nav{position:sticky;top:60px;bottom:auto;border-top:none;border-bottom:1px solid var(--border);padding:0 16px;max-width:680px;margin:0 auto;border-left:1px solid var(--border);border-right:1px solid var(--border);border-radius:0 0 12px 12px}.nav-btn{flex-direction:row;gap:8px;padding:14px 8px;font-size:12px}.nav-btn .ico{font-size:16px}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo"><div class="logo-mark">F</div>Forge<span>Ur</span>Body</div>
+  <div class="streak" id="streakDisplay">🔥 0j</div>
+</header>
+
+<nav>
+  <button class="nav-btn active" data-tab="dashboard"><span class="ico">🏠</span>Accueil</button>
+  <button class="nav-btn" data-tab="muscu"><span class="ico">🏋️</span>Muscu</button>
+  <button class="nav-btn" data-tab="nutrition"><span class="ico">🍎</span>Nutrition</button>
+  <button class="nav-btn" data-tab="sommeil"><span class="ico">💤</span>Sommeil</button>
+  <button class="nav-btn" data-tab="course"><span class="ico">🏃</span>Course</button>
+</nav>
+
+<main>
+  <section id="tab-dashboard" class="section active"><h1>Tableau de bord</h1><p class="lead" id="todayDate">—</p><div id="dashboardContent"></div></section>
+  <section id="tab-muscu" class="section"><h1>Musculation</h1><p class="lead">Programmes, exercices et journal de séances</p><div class="pills" id="muscuPills"><button class="pill active" data-mt="library">Bibliothèque</button><button class="pill" data-mt="program">Programme</button><button class="pill" data-mt="session">Séance du jour</button><button class="pill" data-mt="history">Historique</button></div><div id="muscuContent"></div></section>
+  <section id="tab-nutrition" class="section"><h1>Nutrition</h1><p class="lead">Calories, macros, repas et recettes</p><div class="pills" id="nutriPills"><button class="pill active" data-nt="log">Journal du jour</button><button class="pill" data-nt="calc">Calculateur</button><button class="pill" data-nt="recipes">Recettes</button></div><div id="nutritionContent"></div></section>
+  <section id="tab-sommeil" class="section"><h1>Sommeil & Récupération</h1><p class="lead">Cycles de sommeil, suivi et étirements</p><div class="pills" id="sommeilPills"><button class="pill active" data-st="calc">Calculateur</button><button class="pill" data-st="log">Journal</button><button class="pill" data-st="stretch">Étirements</button></div><div id="sommeilContent"></div></section>
+  <section id="tab-course" class="section"><h1>Course à pied</h1><p class="lead">Plans, VMA, GPS et suivi des sorties</p><div class="pills" id="coursePills"><button class="pill active" data-ct="plans">Plans</button><button class="pill" data-ct="vma">VMA</button><button class="pill" data-ct="gps">GPS</button><button class="pill" data-ct="history">Historique</button></div><div id="courseContent"></div></section>
+</main>
+
+<div class="modal-overlay" id="modalOverlay"><div class="modal"><div class="modal-header"><div class="modal-title" id="modalTitle">Titre</div><button class="modal-close" onclick="closeModal()">✕</button></div><div id="modalBody"></div></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+'use strict';
+
+const Store={get(k,def){try{const v=localStorage.getItem('fub_'+k);return v?JSON.parse(v):def}catch{return def}},set(k,v){try{localStorage.setItem('fub_'+k,JSON.stringify(v))}catch{}}};
+
+/* ===== EXERCISES (50) ===== */
+const EXERCISES=[
+{id:'bench',name:'Développé couché',muscle:'Pectoraux',equip:'Barre',loc:'salle',instr:'Allongé sur le banc, pieds au sol. Barre à hauteur des épaules, descendre jusqu\'à effleurer la poitrine, remonter en poussant. Coudes à 45° du corps.',tips:'Garde les omoplates serrées et le dos légèrement cambré.'},
+{id:'incline-db',name:'Développé incliné haltères',muscle:'Pectoraux',equip:'Haltères',loc:'salle',instr:'Banc incliné à 30-45°. Haltères de chaque côté, pousser vers le haut en rapprochant les mains sans les toucher.',tips:'Le banc incliné cible le haut des pecs.'},
+{id:'dips-pec',name:'Dips (pectoraux)',muscle:'Pectoraux',equip:'Poids du corps',loc:'maison',instr:'Mains sur deux chaises ou barres parallèles, descendre jusqu\'à ce que les coudes atteignent 90°, remonter.',tips:'Penche le buste vers l\'avant pour cibler les pecs.'},
+{id:'pushup',name:'Pompes',muscle:'Pectoraux',equip:'Aucun',loc:'maison',instr:'Mains largeur épaules, corps gainé, descendre jusqu\'à 5cm du sol, remonter.',tips:'Ne laisse pas les hanches s\'affaisser.'},
+{id:'pushup-wide',name:'Pompes large',muscle:'Pectoraux',equip:'Aucun',loc:'maison',instr:'Mains plus larges que les épaules, descendre et remonter.',tips:'Cible l\'extérieur des pecs.'},
+{id:'db-fly',name:'Écarté haltères',muscle:'Pectoraux',equip:'Haltères',loc:'salle',instr:'Allongé, bras tendus au-dessus de la poitrine, descendre les haltères en arc de cercle.',tips:'Léger coude fléchi, ne descends pas trop bas.'},
+{id:'deadlift',name:'Soulevé de terre',muscle:'Dos',equip:'Barre',loc:'salle',instr:'Pieds largeur hanches, barre sur les tibias. Dos droit, pousser dans les jambes, monter la barre le long du corps.',tips:'Le dos ne doit JAMAIS s\'arrondir.'},
+{id:'row-barbell',name:'Rowing barre',muscle:'Dos',equip:'Barre',loc:'salle',instr:'Buste penché à 45°, dos droit. Tirer la barre vers le nombril, coudes vers l\'arrière.',tips:'Serre les omoplates à la fin du mouvement.'},
+{id:'row-db',name:'Rowing haltère',muscle:'Dos',equip:'Haltères',loc:'salle',instr:'Une main sur le banc, un haltère dans l\'autre, tirer vers la hanche.',tips:'Garde le dos plat, pas d\'arrondi.'},
+{id:'pullup',name:'Tractions',muscle:'Dos',equip:'Barre traction',loc:'salle',instr:'Suspendu à la barre, paumes vers l\'avant. Tirer jusqu\'à ce que le menton passe la barre.',tips:'Serre les omoplates en début de mouvement.'},
+{id:'chinup',name:'Tractions supination',muscle:'Dos',equip:'Barre traction',loc:'salle',instr:'Paumes vers toi, tirer jusqu\'au menton.',tips:'Plus facile que les tractions classiques.'},
+{id:'lat-pulldown',name:'Tirage vertical',muscle:'Dos',equip:'Machine',loc:'salle',instr:'Assis, tirer la barre vers la poitrine en serrant les omoplates.',tips:'Ne tire pas derrière la nuque.'},
+{id:'row-band',name:'Tirage élastique',muscle:'Dos',equip:'Élastique',loc:'maison',instr:'Fixer l\'élastique à un point haut, tirer vers la poitrine.',tips:'Idéal si tu n\'as pas de barre.'},
+{id:'superman',name:'Superman',muscle:'Dos',equip:'Aucun',loc:'maison',instr:'Allongé sur le ventre, lever simultanément bras et jambes tendus.',tips:'Maintiens 2 secondes en haut.'},
+{id:'ohp',name:'Développé militaire',muscle:'Épaules',equip:'Barre',loc:'salle',instr:'Debout, barre au niveau des clavicules, pousser au-dessus de la tête.',tips:'Ne cambre pas trop le dos.'},
+{id:'db-press',name:'Développé haltères',muscle:'Épaules',equip:'Haltères',loc:'salle',instr:'Assis, haltères de chaque côté, pousser vers le haut.',tips:'Coudes à 90° en bas.'},
+{id:'lateral-raise',name:'Élévations latérales',muscle:'Épaules',equip:'Haltères',loc:'salle',instr:'Debout, haltères le long du corps, lever sur les côtés jusqu\'à hauteur des épaules.',tips:'Coudes légèrement fléchis.'},
+{id:'front-raise',name:'Élévations frontales',muscle:'Épaules',equip:'Haltères',loc:'salle',instr:'Lever les haltères devant toi jusqu\'à hauteur des yeux.',tips:'Contrôle la descente.'},
+{id:'pike-pushup',name:'Pompes piquées',muscle:'Épaules',equip:'Aucun',loc:'maison',instr:'Position en V inversé, descendre la tête vers le sol en fléchissant les coudes.',tips:'Cible les deltoïdes antérieurs.'},
+{id:'band-pull',name:'Tirage élastique horizontal',muscle:'Épaules',equip:'Élastique',loc:'maison',instr:'Élastique tendu devant toi, écarter les bras en tirant.',tips:'Excellent pour l\'arrière des épaules.'},
+{id:'curl-barbell',name:'Curl barre',muscle:'Biceps',equip:'Barre',loc:'salle',instr:'Debout, barre en supination, fléchir les coudes pour monter la barre.',tips:'Les coudes ne bougent pas.'},
+{id:'curl-db',name:'Curl haltères',muscle:'Biceps',equip:'Haltères',loc:'salle',instr:'Comme le curl barre mais avec des haltères, un bras à la fois ou alterné.',tips:'Supination en montant.'},
+{id:'hammer-curl',name:'Curl marteau',muscle:'Biceps',equip:'Haltères',loc:'salle',instr:'Prise neutre (paumes face à face), fléchir les coudes.',tips:'Cible le brachial.'},
+{id:'chinup-biceps',name:'Tractions supination',muscle:'Biceps',equip:'Barre traction',loc:'salle',instr:'Tractions en supination, focus sur la flexion des coudes.',tips:'Excellent pour les biceps.'},
+{id:'band-curl',name:'Curl élastique',muscle:'Biceps',equip:'Élastique',loc:'maison',instr:'Pied sur l\'élastique, fléchir les coudes en tirant.',tips:'Contrôle bien la descente.'},
+{id:'pushdown',name:'Extension poulie',muscle:'Triceps',equip:'Poulie',loc:'salle',instr:'Debout face à la poulie, coudes au corps, pousser la corde vers le bas.',tips:'Les coudes ne bougent pas.'},
+{id:'skull',name:'Barre au front',muscle:'Triceps',equip:'Barre',loc:'salle',instr:'Allongé, barre au-dessus du front, fléchir les coudes pour descendre derrière la tête.',tips:'Garder les coudes fixes.'},
+{id:'dips-tri',name:'Dips (triceps)',muscle:'Triceps',equip:'Poids du corps',loc:'maison',instr:'Buste droit, descendre en fléchissant les coudes, remonter.',tips:'Buste droit = triceps.'},
+{id:'diamond-pushup',name:'Pompes diamant',muscle:'Triceps',equip:'Aucun',loc:'maison',instr:'Mains en losange sous la poitrine, descendre et remonter.',tips:'Excellent pour les triceps.'},
+{id:'overhead-tri',name:'Extension au-dessus de la tête',muscle:'Triceps',equip:'Haltère',loc:'salle',instr:'Un haltère à deux mains au-dessus de la tête, fléchir les coudes.',tips:'Garde les coudes serrés.'},
+{id:'squat',name:'Squat barre',muscle:'Jambes',equip:'Barre',loc:'salle',instr:'Barre sur les trapèzes, pieds largeur épaules, descendre en poussant les hanches en arrière.',tips:'Genoux dans l\'axe des pieds.'},
+{id:'front-squat',name:'Front squat',muscle:'Jambes',equip:'Barre',loc:'salle',instr:'Barre sur les épaules devant, descendre en gardant le buste droit.',tips:'Cible plus les quadriceps.'},
+{id:'goblet-squat',name:'Goblet squat',muscle:'Jambes',equip:'Haltère',loc:'salle',instr:'Un haltère tenu devant la poitrine, descendre en squat.',tips:'Idéal pour apprendre le squat.'},
+{id:'bodyweight-squat',name:'Squat au poids du corps',muscle:'Jambes',equip:'Aucun',loc:'maison',instr:'Pieds largeur épaules, descendre comme pour s\'asseoir, remonter.',tips:'Parfait pour débuter.'},
+{id:'jump-squat',name:'Squat sauté',muscle:'Jambes',equip:'Aucun',loc:'maison',instr:'Squat puis sauter explosivement, atterrir en douceur.',tips:'Cardio + jambes.'},
+{id:'lunge',name:'Fentes',muscle:'Jambes',equip:'Aucun',loc:'maison',instr:'Un pas en avant, descendre le genou arrière proche du sol, remonter.',tips:'Alterne les jambes.'},
+{id:'bulgarians',name:'Fentes bulgares',muscle:'Jambes',equip:'Haltères',loc:'salle',instr:'Pied arrière sur un banc, descendre sur la jambe avant.',tips:'Excellent pour les quadriceps et fessiers.'},
+{id:'leg-press',name:'Presse à cuisses',muscle:'Jambes',equip:'Machine',loc:'salle',instr:'Assis, pieds sur la plateforme, pousser en tendant les jambes.',tips:'Ne verrouille pas les genoux en haut.'},
+{id:'leg-curl',name:'Leg curl',muscle:'Jambes',equip:'Machine',loc:'salle',instr:'Allongé, fléchir les genoux pour ramener les talons vers les fesses.',tips:'Cible l\'arrière des cuisses.'},
+{id:'leg-ext',name:'Leg extension',muscle:'Jambes',equip:'Machine',loc:'salle',instr:'Assis, tendre les jambes devant toi.',tips:'Cible les quadriceps.'},
+{id:'calf-raise',name:'Mollets debout',muscle:'Jambes',equip:'Machine',loc:'salle',instr:'Debout sur la pointe des pieds, monter et descendre.',tips:'Amplitude complète.'},
+{id:'glute-bridge',name:'Pont fessier',muscle:'Fessiers',equip:'Aucun',loc:'maison',instr:'Allongé sur le dos, pieds au sol, monter les hanches.',tips:'Serre les fessiers en haut.'},
+{id:'hip-thrust',name:'Hip thrust',muscle:'Fessiers',equip:'Barre',loc:'salle',instr:'Épaules sur un banc, barre sur les hanches, pousser les hanches vers le haut.',tips:'Le roi des fessiers.'},
+{id:'plank',name:'Planche',muscle:'Abdos',equip:'Aucun',loc:'maison',instr:'Sur les avant-bras et les pieds, corps aligné, maintenir.',tips:'Serre les abdos et les fessiers.'},
+{id:'side-plank',name:'Planche latérale',muscle:'Abdos',equip:'Aucun',loc:'maison',instr:'Sur le côté, un avant-bras au sol, maintenir le corps aligné.',tips:'Alterne les côtés.'},
+{id:'crunch',name:'Crunchs',muscle:'Abdos',equip:'Aucun',loc:'maison',instr:'Allongé, genoux fléchis, monter les épaules vers les genoux.',tips:'Expire en montant.'},
+{id:'russian-twist',name:'Russian twist',muscle:'Abdos',equip:'Aucun',loc:'maison',instr:'Assis, jambes fléchies, tourner le buste d\'un côté à l\'autre.',tips:'Cible les obliques.'},
+{id:'leg-raise',name:'Relevé de jambes',muscle:'Abdos',equip:'Aucun',loc:'maison',instr:'Allongé, lever les jambes tendues à 90°, redescendre lentement.',tips:'Ne pose pas les pieds au sol.'},
+{id:'mountain-climber',name:'Mountain climbers',muscle:'Abdos',equip:'Aucun',loc:'maison',instr:'Position pompe, ramener les genoux vers la poitrine en alternance rapide.',tips:'Cardio + abdos.'},
+{id:'burpee',name:'Burpees',muscle:'Full body',equip:'Aucun',loc:'maison',instr:'Squat, planche, pompe (optionnel), remonter, sauter.',tips:'Excellent brûle-graisse.'}
+];
+
+/* ===== RECIPES (155) ===== */
+const RECIPES=[
+/* ===== PETIT-DÉJEUNER (1-20) ===== */
+{id:1,name:'Omelette 3 œufs',type:'Petit-déj',kcal:340,p:24,c:2,f:26,min:8,budget:'faible',ing:['3 œufs','1 c.à.c huile','Sel, poivre','Herbes'],steps:'Battre les œufs. Chauffer l\'huile. Verser, cuire 3 min. Plier et servir.'},
+{id:2,name:'Porridge protéiné',type:'Petit-déj',kcal:380,p:28,c:45,f:8,min:5,budget:'faible',ing:['60g flocons avoine','250ml lait','1 dose whey','1 banane'],steps:'Chauffer lait, ajouter flocons, cuire 3 min. Ajouter whey hors du feu. Garnir banane.'},
+{id:3,name:'Pancakes protéinés',type:'Petit-déj',kcal:420,p:32,c:40,f:12,min:12,budget:'faible',ing:['2 œufs','40g flocons avoine','1 dose whey','1 c.à.s lait'],steps:'Mixer tous les ingrédients. Cuire comme des pancakes 2 min par face.'},
+{id:4,name:'Yaourt grec + fruits secs',type:'Petit-déj',kcal:280,p:20,c:22,f:12,min:2,budget:'faible',ing:['200g yaourt grec','1 poignée amandes','1 c.à.s miel','Fruits rouges'],steps:'Verser yaourt dans un bol. Ajouter fruits, amandes, miel.'},
+{id:5,name:'Pain complet + beurre cacahuète',type:'Petit-déj',kcal:350,p:14,c:35,f:18,min:3,budget:'faible',ing:['2 tranches pain','2 c.à.s beurre cacahuète','1 banane'],steps:'Toaster le pain, étaler beurre, ajouter banane en rondelles.'},
+{id:6,name:'Smoothie bowl',type:'Petit-déj',kcal:390,p:22,c:55,f:10,min:5,budget:'faible',ing:['1 banane congelée','100g fruits rouges','150ml lait','1 dose whey','Granola'],steps:'Mixer banane, fruits, lait, whey. Verser dans bol, garnir granola.'},
+{id:7,name:'Œufs brouillés + avocat',type:'Petit-déj',kcal:420,p:20,c:12,f:34,min:8,budget:'moyen',ing:['3 œufs','1/2 avocat','Sel, poivre','1 tranche pain complet'],steps:'Brouiller les œufs à feu doux. Tartiner avocat sur pain. Servir.'},
+{id:8,name:'Overnight oats',type:'Petit-déj',kcal:360,p:18,c:50,f:10,min:2,budget:'faible',ing:['50g flocons avoine','150ml lait','1 c.à.s graines chia','1 c.à.s miel','Fruits'],steps:'Mélanger tout dans un bocal. Frigo toute la nuit. Manger froid.'},
+{id:9,name:'Tartines beurre + confiture',type:'Petit-déj',kcal:290,p:9,c:42,f:10,min:3,budget:'faible',ing:['2 tranches pain','10g beurre','2 c.à.s confiture'],steps:'Toaster pain, étaler beurre et confiture.'},
+{id:10,name:'Shakshuka',type:'Petit-déj',kcal:320,p:20,c:14,f:22,min:15,budget:'faible',ing:['2 œufs','200g tomates concassées','1 oignon','1 gousse ail','Paprika, cumin'],steps:'Faire revenir oignon et ail. Ajouter tomates et épices. Casser œufs. Couvrir 8 min.'},
+{id:11,name:'Muffins œufs-jambon',type:'Petit-déj',kcal:280,p:22,c:4,f:20,min:15,budget:'faible',ing:['4 œufs','50g jambon','Poivron','Fromage râpé'],steps:'Battre œufs, ajouter jambon et légumes. Verser dans moules à muffins. Four 180°C 12 min.'},
+{id:12,name:'Toast avocat-œuf',type:'Petit-déj',kcal:380,p:18,c:28,f:22,min:8,budget:'moyen',ing:['1 tranche pain complet','1/2 avocat','1 œuf','Sel, poivre, piment'],steps:'Toaster pain, écraser avocat dessus. Cuire œuf au plat. Poser sur toast.'},
+{id:13,name:'Bowl fromage blanc-fruits',type:'Petit-déj',kcal:310,p:24,c:35,f:8,min:3,budget:'faible',ing:['250g fromage blanc 0%','1 pomme','20g amandes','1 c.à.c miel'],steps:'Verser fromage blanc dans un bol. Ajouter pomme en dés, amandes, miel.'},
+{id:14,name:'Crêpes protéinées',type:'Petit-déj',kcal:400,p:28,c:42,f:12,min:15,budget:'faible',ing:['2 œufs','30g farine','1 dose whey','100ml lait'],steps:'Mélanger tous les ingrédients. Cuire à la poêle 1-2 min par face.'},
+{id:15,name:'Smoothie vert protéiné',type:'Petit-déj',kcal:290,p:26,c:30,f:6,min:5,budget:'faible',ing:['1 poignée épinards','1 banane','1 dose whey','200ml lait amande'],steps:'Mixer tous les ingrédients. Boire frais.'},
+{id:16,name:'Pain perdu protéiné',type:'Petit-déj',kcal:380,p:24,c:38,f:14,min:10,budget:'faible',ing:['2 tranches pain complet','2 œufs','50ml lait','1 dose whey','Cannelle'],steps:'Battre œufs + lait + whey. Tremper pain. Cuire à la poêle 2 min par face.'},
+{id:17,name:'Bircher muesli',type:'Petit-déj',kcal:350,p:16,c:52,f:10,min:3,budget:'faible',ing:['50g muesli','150g yaourt','1 pomme râpée','1 c.à.s miel'],steps:'Mélanger tout. Laisser reposer 30 min au frigo.'},
+{id:18,name:'Œufs brouillés au saumon',type:'Petit-déj',kcal:340,p:26,c:2,f:24,min:8,budget:'moyen',ing:['3 œufs','50g saumon fumé','Ciboulette','1 c.à.c huile'],steps:'Brouiller œufs à feu doux. Ajouter saumon en morceaux. Parsemer ciboulette.'},
+{id:19,name:'Riz au lait protéiné',type:'Petit-déj',kcal:390,p:22,c:55,f:8,min:20,budget:'faible',ing:['50g riz','300ml lait','1 dose whey vanille','1 c.à.s sucre'],steps:'Cuire riz dans lait 20 min. Laisser tiédir. Ajouter whey. Servir.'},
+{id:20,name:'Muffins banane-avoine',type:'Petit-déj',kcal:320,p:14,c:45,f:10,min:25,budget:'faible',ing:['1 banane','50g flocons avoine','2 œufs','1 c.à.s miel'],steps:'Écraser banane, mélanger avec œufs et avoine. Verser dans moules. Four 180°C 20 min.'},
+/* ===== DÉJEUNER (21-50) ===== */
+{id:21,name:'Poulet riz brocoli',type:'Déjeuner',kcal:520,p:42,c:55,f:12,min:20,budget:'faible',ing:['150g poulet','80g riz','150g brocoli','1 c.à.s huile','Ail, paprika'],steps:'Cuire riz. Saisir poulet en dés. Cuire brocoli 5 min vapeur. Mélanger.'},
+{id:22,name:'Wrap thon avocat',type:'Déjeuner',kcal:480,p:32,c:38,f:22,min:8,budget:'faible',ing:['1 tortilla','1 boîte thon','1/4 avocat','Salade','Citron, mayo'],steps:'Écraser thon avec mayo et citron. Garnir tortilla avec avocat et salade. Rouler.'},
+{id:23,name:'Salade quinoa feta',type:'Déjeuner',kcal:450,p:20,c:45,f:20,min:15,budget:'moyen',ing:['80g quinoa','50g feta','Tomates','Concombre','Huile, citron'],steps:'Cuire quinoa 15 min. Refroidir. Mélanger avec légumes et feta.'},
+{id:24,name:'Pâtes bolognaise',type:'Déjeuner',kcal:580,p:32,c:65,f:20,min:25,budget:'faible',ing:['100g pâtes','100g bœuf haché','200g tomates','1 oignon','Herbes'],steps:'Cuire pâtes. Revenir oignon, viande, tomates. Mijoter 10 min. Mélanger.'},
+{id:25,name:'Bowl saumon riz',type:'Déjeuner',kcal:560,p:38,c:52,f:22,min:20,budget:'moyen',ing:['150g saumon','80g riz','1 avocat','Concombre','Sauce soja'],steps:'Cuire riz. Griller saumon 4 min par face. Couper légumes. Assembler.'},
+{id:26,name:'Omelette 3 œufs + salade',type:'Déjeuner',kcal:380,p:28,c:8,f:26,min:10,budget:'faible',ing:['3 œufs','Salade verte','Tomate','1 c.à.s huile'],steps:'Battre œufs, cuire omelette. Servir avec salade et tomate.'},
+{id:27,name:'Sandwich poulet crudités',type:'Déjeuner',kcal:420,p:30,c:42,f:14,min:8,budget:'faible',ing:['2 tranches pain complet','100g poulet','Salade','Tomate','Moutarde'],steps:'Toaster pain. Garnir avec poulet, légumes, moutarde.'},
+{id:28,name:'Chili con carne',type:'Déjeuner',kcal:520,p:34,c:45,f:20,min:30,budget:'faible',ing:['150g bœuf haché','200g haricots rouges','200g tomates','1 oignon','Épices chili'],steps:'Revenir oignon et viande. Ajouter tomates, haricots, épices. Mijoter 20 min.'},
+{id:29,name:'Salade César poulet',type:'Déjeuner',kcal:480,p:34,c:18,f:30,min:12,budget:'moyen',ing:['150g poulet','Salade romaine','Parmesan','Croutons','Sauce césar'],steps:'Griller poulet, couper en dés. Mélanger salade, croutons, parmesan, poulet, sauce.'},
+{id:30,name:'Riz cantonais',type:'Déjeuner',kcal:510,p:24,c:62,f:16,min:15,budget:'faible',ing:['80g riz','2 œufs','100g petits pois','100g jambon','Sauce soja'],steps:'Cuire riz. Revenir jambon, œufs, petits pois, riz. Assaisonner.'},
+{id:31,name:'Buddha bowl',type:'Déjeuner',kcal:490,p:18,c:55,f:20,min:20,budget:'moyen',ing:['80g riz','100g pois chiches','1/2 avocat','Carottes','Sauce tahini'],steps:'Cuire riz. Griller pois chiches. Couper légumes. Assembler avec sauce.'},
+{id:32,name:'Pâtes pesto poulet',type:'Déjeuner',kcal:580,p:36,c:58,f:22,min:18,budget:'moyen',ing:['100g pâtes','120g poulet','2 c.à.s pesto','Parmesan'],steps:'Cuire pâtes. Griller poulet en dés. Mélanger pâtes, poulet, pesto, parmesan.'},
+{id:33,name:'Taboulé libanais',type:'Déjeuner',kcal:380,p:12,c:52,f:14,min:15,budget:'faible',ing:['80g semoule','Tomates','Concombre','Menthe','Citron, huile'],steps:'Hydrater semoule. Mélanger avec légumes coupés fin, menthe, huile, citron.'},
+{id:34,name:'Burger maison',type:'Déjeuner',kcal:620,p:36,c:45,f:30,min:15,budget:'faible',ing:['1 pain burger','120g bœuf','1 tranche fromage','Salade','Sauce'],steps:'Former steak, cuire 3 min par face. Monter burger avec pain, salade, tomate, fromage.'},
+{id:35,name:'Poke bowl thon',type:'Déjeuner',kcal:530,p:34,c:58,f:16,min:15,budget:'moyen',ing:['80g riz','150g thon','1/2 avocat','Concombre','Sauce soja'],steps:'Cuire riz. Couper thon et légumes. Assembler, arroser sauce soja.'},
+{id:36,name:'Wrap poulet-crudités',type:'Déjeuner',kcal:440,p:32,c:42,f:14,min:10,budget:'faible',ing:['1 tortilla','120g poulet','Salade','Tomate','Sauce yaourt'],steps:'Griller poulet en lamelles. Garnir tortilla avec légumes et sauce. Rouler.'},
+{id:37,name:'Salade de lentilles',type:'Déjeuner',kcal:400,p:22,c:52,f:10,min:15,budget:'faible',ing:['100g lentilles','Tomates','Oignon rouge','Persil','Huile, vinaigre'],steps:'Cuire lentilles 20 min. Refroidir. Mélanger avec légumes et vinaigrette.'},
+{id:38,name:'Pâtes thon tomate',type:'Déjeuner',kcal:520,p:30,c:62,f:14,min:15,budget:'faible',ing:['100g pâtes','1 boîte thon','200g tomates','1 oignon','Ail'],steps:'Cuire pâtes. Revenir oignon, ail, tomates, thon. Mélanger.'},
+{id:39,name:'Burrito poulet',type:'Déjeuner',kcal:580,p:36,c:55,f:22,min:20,budget:'faible',ing:['1 tortilla','150g poulet','80g riz','Haricots rouges','Fromage'],steps:'Cuire riz. Griller poulet. Garnir tortilla avec tout. Rouler.'},
+{id:40,name:'Salade pâtes pesto',type:'Déjeuner',kcal:520,p:18,c:58,f:24,min:15,budget:'faible',ing:['100g pâtes','2 c.à.s pesto','Tomates cerises','Mozzarella','Basilic'],steps:'Cuire pâtes, refroidir. Mélanger avec pesto, tomates, mozzarella.'},
+{id:41,name:'Soupe lentilles-carottes',type:'Déjeuner',kcal:380,p:22,c:48,f:8,min:25,budget:'faible',ing:['100g lentilles','2 carottes','1 oignon','1 bouillon','Cumin'],steps:'Cuire tous les ingrédients 25 min. Mixer si désiré.'},
+{id:42,name:'Wrap saumon-avocat',type:'Déjeuner',kcal:470,p:28,c:38,f:22,min:10,budget:'moyen',ing:['1 tortilla','80g saumon','1/2 avocat','Salade','Citron'],steps:'Griller saumon. Émietter. Garnir tortilla avec avocat, salade, citron. Rouler.'},
+{id:43,name:'Riz poulet curry',type:'Déjeuner',kcal:560,p:34,c:58,f:18,min:25,budget:'faible',ing:['80g riz','150g poulet','150ml lait coco','1 oignon','Curry'],steps:'Cuire riz. Revenir oignon, poulet, curry. Ajouter lait coco. Mijoter 15 min.'},
+{id:44,name:'Salade poivrons-feta',type:'Déjeuner',kcal:380,p:14,c:18,f:28,min:10,budget:'moyen',ing:['2 poivrons','100g feta','Olives','Huile olive','Origan'],steps:'Couper poivrons en lamelles. Mélanger avec feta, olives, huile, origan.'},
+{id:45,name:'Pâtes aux légumes',type:'Déjeuner',kcal:450,p:14,c:68,f:12,min:20,budget:'faible',ing:['100g pâtes','Courgette','Poivron','Tomates','Huile olive'],steps:'Cuire pâtes. Revenir légumes en dés. Mélanger. Assaisonner.'},
+{id:46,name:'Bowl poulet-quinoa',type:'Déjeuner',kcal:540,p:38,c:48,f:18,min:20,budget:'moyen',ing:['150g poulet','80g quinoa','Avocat','Tomates','Citron'],steps:'Cuire quinoa. Griller poulet. Assembler avec légumes et citron.'},
+{id:47,name:'Croque-monsieur healthy',type:'Déjeuner',kcal:420,p:26,c:32,f:20,min:10,budget:'faible',ing:['2 tranches pain','50g jambon','40g fromage','Tomate'],steps:'Garnir pain avec jambon, fromage, tomate. Cuire à la poêle ou au four 5 min.'},
+{id:48,name:'Salade de riz',type:'Déjeuner',kcal:440,p:18,c:58,f:14,min:15,budget:'faible',ing:['80g riz','Thon','Maïs','Tomates','Œuf dur'],steps:'Cuire riz, refroidir. Mélanger avec thon, maïs, tomates, œuf dur.'},
+{id:49,name:'Gratin de pâtes',type:'Déjeuner',kcal:540,p:26,c:55,f:22,min:25,budget:'faible',ing:['100g pâtes','100g poulet','150ml lait','Fromage râpé','Farine'],steps:'Cuire pâtes. Faire béchamel. Mélanger avec poulet. Couvrir fromage. Four 15 min.'},
+{id:50,name:'Salade grecque',type:'Déjeuner',kcal:360,p:14,c:18,f:26,min:10,budget:'moyen',ing:['Tomates','Concombre','Feta','Olives','Huile olive, origan'],steps:'Couper légumes. Mélanger avec feta, olives, huile, origan.'},
+/* ===== DÎNER (51-80) ===== */
+{id:51,name:'Saumon + légumes rôtis',type:'Dîner',kcal:480,p:36,c:20,f:28,min:25,budget:'moyen',ing:['150g saumon','200g légumes variés','1 c.à.s huile','Herbes'],steps:'Préchauffer four 200°C. Disposer saumon et légumes, huiler, enfourner 20 min.'},
+{id:52,name:'Poulet grillé + riz',type:'Dîner',kcal:520,p:42,c:55,f:10,min:20,budget:'faible',ing:['150g poulet','80g riz','Épices','1 c.à.s huile'],steps:'Griller poulet assaisonné. Cuire riz. Servir ensemble.'},
+{id:53,name:'Steak + purée maison',type:'Dîner',kcal:580,p:38,c:38,f:28,min:25,budget:'moyen',ing:['150g steak','2 pommes de terre','10cl lait','10g beurre'],steps:'Cuire pommes de terre 20 min. Écraser avec lait et beurre. Saisir steak 3 min par face.'},
+{id:54,name:'Curry poulet coco',type:'Dîner',kcal:540,p:34,c:38,f:28,min:25,budget:'faible',ing:['150g poulet','150ml lait coco','1 oignon','80g riz','Curry'],steps:'Revenir oignon, poulet, curry. Ajouter lait coco. Mijoter 15 min. Servir avec riz.'},
+{id:55,name:'Cabillaud vapeur + riz',type:'Dîner',kcal:420,p:38,c:48,f:6,min:15,budget:'moyen',ing:['150g cabillaud','80g riz','Citron','Persil'],steps:'Cuire riz. Cuire cabillaud vapeur 8 min. Arroser citron et persil.'},
+{id:56,name:'Omelette 3 œufs + légumes',type:'Dîner',kcal:360,p:26,c:10,f:24,min:10,budget:'faible',ing:['3 œufs','Courgette','Poivron','1 c.à.s huile'],steps:'Revenir légumes coupés. Ajouter œufs battus. Cuire à feu moyen.'},
+{id:57,name:'Pâtes carbo light',type:'Dîner',kcal:540,p:28,c:60,f:20,min:20,budget:'faible',ing:['100g pâtes','100g lardons','2 jaunes œufs','Parmesan'],steps:'Cuire pâtes. Revenir lardons. Mélanger pâtes, lardons, jaunes hors du feu.'},
+{id:58,name:'Poêlée de crevettes',type:'Dîner',kcal:380,p:32,c:15,f:20,min:15,budget:'moyen',ing:['200g crevettes','1 courgette','1 poivron','1 c.à.s huile','Ail'],steps:'Revenir ail, ajouter crevettes, cuire 3 min. Ajouter légumes, cuire 5 min.'},
+{id:59,name:'Tacos poulet',type:'Dîner',kcal:520,p:32,c:48,f:22,min:20,budget:'faible',ing:['2 tortillas','150g poulet','Fromage','Salade','Tomate'],steps:'Griller poulet en lamelles. Garnir tortillas avec poulet, fromage, légumes.'},
+{id:60,name:'Soupe de légumes + pain',type:'Dîner',kcal:320,p:12,c:45,f:8,min:25,budget:'faible',ing:['500g légumes','1 bouillon','2 tranches pain complet'],steps:'Cuire légumes dans bouillon 20 min. Mixer. Servir avec pain.'},
+{id:61,name:'Ratatouille + œuf',type:'Dîner',kcal:380,p:20,c:25,f:22,min:30,budget:'faible',ing:['Courgette','Aubergine','Tomates','Poivron','2 œufs'],steps:'Cuire légumes coupés 25 min. Casser œufs dessus, couvrir 5 min.'},
+{id:62,name:'Poulet rôti moutarde',type:'Dîner',kcal:480,p:42,c:15,f:26,min:35,budget:'moyen',ing:['200g poulet','2 c.à.s moutarde','Herbes','1 c.à.s huile'],steps:'Badigeonner poulet de moutarde et herbes. Four 200°C 30 min.'},
+{id:63,name:'Risotto champignons',type:'Dîner',kcal:520,p:18,c:65,f:20,min:30,budget:'faible',ing:['80g riz arborio','200g champignons','1 oignon','50ml vin blanc','Parmesan'],steps:'Revenir oignon, champignons. Ajouter riz, vin, bouillon petit à petit. Parmesan en fin.'},
+{id:64,name:'Steak haché + haricots verts',type:'Dîner',kcal:460,p:38,c:12,f:28,min:15,budget:'faible',ing:['150g bœuf haché','200g haricots verts','Ail','1 c.à.s huile'],steps:'Former steak, cuire 3 min par face. Cuire haricots 8 min vapeur. Servir.'},
+{id:65,name:'Gratin dauphinois light',type:'Dîner',kcal:480,p:14,c:55,f:22,min:45,budget:'faible',ing:['4 pommes de terre','20cl lait','1 gousse ail','50g fromage râpé'],steps:'Couper pommes de terre en lamelles. Disposer avec lait, ail, fromage. Four 180°C 40 min.'},
+{id:66,name:'Salade lentilles saumon',type:'Dîner',kcal:460,p:34,c:38,f:16,min:20,budget:'moyen',ing:['80g lentilles','100g saumon','Épinards','Tomates','Huile, citron'],steps:'Cuire lentilles 20 min. Griller saumon 4 min par face. Mélanger avec légumes.'},
+{id:67,name:'Wrap végétarien',type:'Dîner',kcal:380,p:16,c:45,f:16,min:10,budget:'faible',ing:['1 tortilla','Houmous','Carottes','Concombre','Feta'],steps:'Tartiner tortilla de houmous. Ajouter légumes râpés et feta. Rouler.'},
+{id:68,name:'Chili sin carne',type:'Dîner',kcal:420,p:20,c:55,f:12,min:25,budget:'faible',ing:['200g haricots rouges','200g tomates','1 poivron','1 oignon','Épices'],steps:'Revenir oignon et poivron. Ajouter haricots, tomates, épices. Mijoter 20 min.'},
+{id:69,name:'Onglet + patates douces',type:'Dîner',kcal:540,p:38,c:42,f:24,min:30,budget:'moyen',ing:['150g onglet','1 patate douce','1 c.à.s huile','Romarin'],steps:'Cuire patate douce au four 25 min. Saisir viande 3 min par face.'},
+{id:70,name:'Soupe miso + riz',type:'Dîner',kcal:380,p:14,c:58,f:10,min:15,budget:'faible',ing:['1 sachet soupe miso','60g riz','Tofu','Ciboule'],steps:'Cuire riz. Préparer soupe miso. Ajouter tofu en dés et ciboule.'},
+{id:71,name:'Poulet au four + légumes',type:'Dîner',kcal:460,p:40,c:18,f:24,min:30,budget:'faible',ing:['200g poulet','200g légumes','1 c.à.s huile','Thym, romarin'],steps:'Disposer poulet et légumes sur plaque. Huiler, herbes. Four 200°C 25 min.'},
+{id:72,name:'Poisson blanc + purée',type:'Dîner',kcal:440,p:34,c:38,f:16,min:20,budget:'moyen',ing:['150g poisson blanc','2 pommes de terre','10cl lait','10g beurre'],steps:'Cuire pommes de terre. Écraser avec lait et beurre. Cuire poisson à la poêle 3 min par face.'},
+{id:73,name:'Riz sauté aux légumes',type:'Dîner',kcal:420,p:14,c:62,f:14,min:15,budget:'faible',ing:['80g riz','100g légumes variés','2 œufs','Sauce soja'],steps:'Cuire riz. Revenir légumes, ajouter œufs, riz, sauce soja. Sauter 3 min.'},
+{id:74,name:'Poulet au curry léger',type:'Dîner',kcal:480,p:38,c:35,f:22,min:20,budget:'faible',ing:['150g poulet','100ml lait coco','1 oignon','Curry','60g riz'],steps:'Cuire riz. Revenir poulet en dés avec oignon et curry. Ajouter lait coco. Mijoter 10 min.'},
+{id:75,name:'Soupe de poisson',type:'Dîner',kcal:320,p:28,c:18,f:14,min:25,budget:'moyen',ing:['200g poisson','Tomates','Oignon','Ail','Herbes'],steps:'Revenir oignon, ail. Ajouter tomates et poisson. Couvrir d\'eau. Cuire 20 min.'},
+{id:76,name:'Couscous rapide',type:'Dîner',kcal:520,p:32,c:58,f:16,min:20,budget:'faible',ing:['80g semoule','150g poulet','Légumes variés','Épices'],steps:'Hydrater semoule. Cuire poulet avec légumes et épices. Servir ensemble.'},
+{id:77,name:'Omelette espagnole',type:'Dîner',kcal:400,p:24,c:22,f:24,min:20,budget:'faible',ing:['3 œufs','2 pommes de terre','1 oignon','Huile olive'],steps:'Cuire pommes de terre et oignon. Battre œufs. Mélanger. Cuire à la poêle 5 min par face.'},
+{id:78,name:'Poêlée de bœuf',type:'Dîner',kcal:520,p:40,c:20,f:30,min:15,budget:'moyen',ing:['150g bœuf','Poivron','Oignon','Sauce soja','Huile'],steps:'Saisir bœuf en lamelles. Ajouter légumes, sauce soja. Sauter 5 min.'},
+{id:79,name:'Gratin de courgettes',type:'Dîner',kcal:380,p:18,c:22,f:24,min:30,budget:'faible',ing:['2 courgettes','2 œufs','100ml lait','Fromage râpé'],steps:'Couper courgettes en rondelles. Cuire 10 min vapeur. Disposer dans plat avec œufs, lait, fromage. Four 20 min.'},
+{id:80,name:'Poulet citron-thym',type:'Dîner',kcal:420,p:42,c:8,f:24,min:25,budget:'faible',ing:['200g poulet','1 citron','Thym','1 c.à.s huile'],steps:'Mariner poulet avec citron et thym. Cuire au four 20 min à 200°C.'},
+/* ===== COLLATION (81-100) ===== */
+{id:81,name:'Shake protéiné',type:'Collation',kcal:150,p:25,c:5,f:3,min:2,budget:'faible',ing:['1 dose whey','250ml eau ou lait'],steps:'Mélanger whey et liquide. Boire.'},
+{id:82,name:'Yaourt + amandes',type:'Collation',kcal:220,p:15,c:12,f:14,min:2,budget:'faible',ing:['150g yaourt grec','20g amandes'],steps:'Verser yaourt dans bol. Ajouter amandes.'},
+{id:83,name:'Pomme + beurre cacahuète',type:'Collation',kcal:230,p:8,c:28,f:12,min:2,budget:'faible',ing:['1 pomme','1 c.à.s beurre cacahuète'],steps:'Couper pomme, tartiner.'},
+{id:84,name:'Fromage blanc + miel',type:'Collation',kcal:180,p:16,c:18,f:4,min:2,budget:'faible',ing:['200g fromage blanc','1 c.à.s miel'],steps:'Verser fromage blanc. Ajouter miel.'},
+{id:85,name:'Œufs durs',type:'Collation',kcal:150,p:13,c:1,f:10,min:10,budget:'faible',ing:['2 œufs'],steps:'Cuire 10 min dans eau bouillante. Refroidir, écaler.'},
+{id:86,name:'Houmous + légumes',type:'Collation',kcal:180,p:6,c:14,f:12,min:3,budget:'faible',ing:['50g houmous','Carottes','Concombre'],steps:'Couper légumes en bâtonnets. Tremper dans houmous.'},
+{id:87,name:'Barre protéinée maison',type:'Collation',kcal:200,p:18,c:15,f:8,min:5,budget:'moyen',ing:['1 dose whey','40g flocons avoine','1 c.à.s beurre cacahuète','Eau'],steps:'Mélanger whey, avoine, beurre. Ajouter eau pour lier. Former barres, frigo 30 min.'},
+{id:88,name:'Smoothie fruits',type:'Collation',kcal:220,p:8,c:38,f:4,min:5,budget:'faible',ing:['1 banane','100g fruits rouges','200ml lait'],steps:'Mixer tous les ingrédients.'},
+{id:89,name:'Pain complet + fromage',type:'Collation',kcal:240,p:12,c:22,f:12,min:2,budget:'faible',ing:['1 tranche pain','30g fromage'],steps:'Tartiner ou poser fromage sur pain.'},
+{id:90,name:'Riz au lait',type:'Collation',kcal:250,p:10,c:38,f:6,min:25,budget:'faible',ing:['50g riz','300ml lait','1 c.à.s sucre'],steps:'Cuire riz dans lait 20 min à feu doux. Sucrer.'},
+{id:91,name:'Amandes + chocolat noir',type:'Collation',kcal:200,p:6,c:14,f:16,min:1,budget:'faible',ing:['20g amandes','10g chocolat noir 85%'],steps:'Manger ensemble.'},
+{id:92,name:'Œuf + avocat',type:'Collation',kcal:220,p:14,c:6,f:18,min:8,budget:'faible',ing:['1 œuf','1/2 avocat','Sel, poivre'],steps:'Cuire œuf dur ou au plat. Écraser avocat. Mélanger.'},
+{id:93,name:'Toast ricotta-miel',type:'Collation',kcal:210,p:10,c:20,f:10,min:3,budget:'faible',ing:['1 tranche pain','30g ricotta','1 c.à.c miel'],steps:'Toaster pain, tartiner ricotta, ajouter miel.'},
+{id:94,name:'Yaourt + granola',type:'Collation',kcal:260,p:14,c:32,f:10,min:2,budget:'faible',ing:['150g yaourt','30g granola'],steps:'Verser yaourt, ajouter granola.'},
+{id:95,name:'Banane + amandes',type:'Collation',kcal:220,p:6,c:30,f:10,min:1,budget:'faible',ing:['1 banane','15g amandes'],steps:'Manger ensemble.'},
+{id:96,name:'Smoothie protéiné mangue',type:'Collation',kcal:220,p:22,c:28,f:2,min:3,budget:'faible',ing:['100g mangue','1 dose whey','200ml eau'],steps:'Mixer tous les ingrédients.'},
+{id:97,name:'Galettes de riz + houmous',type:'Collation',kcal:160,p:5,c:20,f:8,min:2,budget:'faible',ing:['2 galettes riz','30g houmous'],steps:'Tartiner houmous sur galettes.'},
+{id:98,name:'Fromage + noix',type:'Collation',kcal:230,p:12,c:4,f:20,min:1,budget:'moyen',ing:['30g fromage','15g noix'],steps:'Manger ensemble.'},
+{id:99,name:'Compote + amandes',type:'Collation',kcal:180,p:4,c:24,f:8,min:1,budget:'faible',ing:['1 compote sans sucre','15g amandes'],steps:'Manger ensemble.'},
+{id:100,name:'Yaourt soja + fruits',type:'Collation',kcal:180,p:8,c:28,f:4,min:2,budget:'faible',ing:['1 yaourt soja','100g fruits'],steps:'Verser yaourt, ajouter fruits.'},
+/* ===== SPORTIF / PROTÉINÉ (101-120) ===== */
+{id:101,name:'Poulet-teriyaki riz',type:'Déjeuner',kcal:560,p:40,c:55,f:16,min:20,budget:'moyen',ing:['150g poulet','80g riz','Sauce teriyaki','Brocoli'],steps:'Cuire riz. Saisir poulet, ajouter sauce teriyaki. Cuire brocoli. Assembler.'},
+{id:102,name:'Bœuf-stroganoff léger',type:'Dîner',kcal:520,p:38,c:35,f:24,min:25,budget:'moyen',ing:['150g bœuf','Champignons','100ml crème légère','60g riz'],steps:'Cuire riz. Revenir bœuf, champignons. Ajouter crème. Mijoter 10 min.'},
+{id:103,name:'Saumon-teriyaki',type:'Dîner',kcal:480,p:38,c:25,f:24,min:20,budget:'moyen',ing:['150g saumon','Sauce teriyaki','60g riz','Sésame'],steps:'Cuire riz. Griller saumon, badigeonner teriyaki. Parsemer sésame.'},
+{id:104,name:'Poulet-pesto pâtes',type:'Déjeuner',kcal:580,p:40,c:58,f:22,min:18,budget:'moyen',ing:['100g pâtes','150g poulet','2 c.à.s pesto','Parmesan'],steps:'Cuire pâtes. Griller poulet en dés. Mélanger avec pesto et parmesan.'},
+{id:105,name:'Omelette protéinée 4 œufs',type:'Dîner',kcal:420,p:34,c:4,f:30,min:8,budget:'faible',ing:['4 œufs','30g fromage','Jambon','Poivron'],steps:'Battre œufs, ajouter garniture. Cuire omelette à la poêle.'},
+{id:106,name:'Steak-brocoli',type:'Dîner',kcal:460,p:42,c:12,f:28,min:15,budget:'moyen',ing:['150g steak','200g brocoli','1 c.à.s huile','Ail'],steps:'Saisir steak 3 min par face. Cuire brocoli vapeur. Servir.'},
+{id:107,name:'Bowl protéiné saumon-avocat',type:'Déjeuner',kcal:540,p:36,c:38,f:26,min:20,budget:'moyen',ing:['150g saumon','80g riz','1/2 avocat','Concombre','Sésame'],steps:'Cuire riz. Griller saumon. Assembler avec avocat, concombre, sésame.'},
+{id:108,name:'Poulet-curry riz',type:'Déjeuner',kcal:540,p:38,c:55,f:16,min:20,budget:'faible',ing:['150g poulet','80g riz','Curry','100ml lait coco'],steps:'Cuire riz. Revenir poulet avec curry. Ajouter lait coco. Mijoter 10 min.'},
+{id:109,name:'Crevettes-pâtes',type:'Dîner',kcal:480,p:32,c:58,f:14,min:18,budget:'moyen',ing:['150g crevettes','100g pâtes','Ail','Huile olive','Persil'],steps:'Cuire pâtes. Revenir ail, crevettes. Mélanger avec pâtes, huile, persil.'},
+{id:110,name:'Poulet rôti + patates',type:'Dîner',kcal:540,p:40,c:42,f:22,min:35,budget:'faible',ing:['200g poulet','2 patates','Huile','Herbes'],steps:'Badigeonner poulet d\'huile et herbes. Cuire au four 30 min. Cuire patates.'},
+{id:111,name:'Wrap protéiné poulet',type:'Déjeuner',kcal:460,p:36,c:38,f:16,min:10,budget:'faible',ing:['1 tortilla','150g poulet','Fromage blanc','Salade'],steps:'Griller poulet. Garnir tortilla avec poulet, fromage blanc, salade. Rouler.'},
+{id:112,name:'Omelette 4 œufs + salade',type:'Dîner',kcal:400,p:32,c:6,f:28,min:10,budget:'faible',ing:['4 œufs','Salade','Tomate','1 c.à.s huile'],steps:'Battre œufs, cuire omelette. Servir avec salade.'},
+{id:113,name:'Poulet-tzatziki',type:'Déjeuner',kcal:420,p:42,c:12,f:22,min:20,budget:'faible',ing:['200g poulet','Yaourt grec','Concombre','Ail','Huile olive'],steps:'Griller poulet. Mélanger yaourt, concombre râpé, ail. Servir.'},
+{id:114,name:'Saumon-grillé + légumes',type:'Dîner',kcal:460,p:36,c:18,f:26,min:20,budget:'moyen',ing:['150g saumon','200g légumes','Huile olive','Citron'],steps:'Griller saumon 4 min par face. Cuire légumes. Arroser citron.'},
+{id:115,name:'Bowl œufs-avocat',type:'Déjeuner',kcal:420,p:24,c:12,f:32,min:10,budget:'faible',ing:['3 œufs','1/2 avocat','Tomate','Huile olive'],steps:'Cuire œufs au plat. Écraser avocat sur toast. Servir avec tomate.'},
+{id:116,name:'Poulet rôti-citron',type:'Dîner',kcal:440,p:42,c:8,f:26,min:25,budget:'faible',ing:['200g poulet','Citron','Thym','Huile olive'],steps:'Mariner poulet. Cuire au four 20 min à 200°C.'},
+{id:117,name:'Steak-purée protéinée',type:'Dîner',kcal:580,p:42,c:38,f:26,min:25,budget:'moyen',ing:['150g steak','2 pommes de terre','20g whey','10cl lait'],steps:'Cuire pommes de terre. Écraser avec lait et whey. Saisir steak 3 min par face.'},
+{id:118,name:'Poulet-wok légumes',type:'Déjeuner',kcal:480,p:36,c:38,f:18,min:15,budget:'faible',ing:['150g poulet','150g légumes variés','Sauce soja','60g riz'],steps:'Cuire riz. Saisir poulet, ajouter légumes et sauce soja. Sauter 5 min.'},
+{id:119,name:'Omelette saumon-épinards',type:'Dîner',kcal:400,p:32,c:4,f:28,min:10,budget:'moyen',ing:['3 œufs','50g saumon','Épinards','Huile'],steps:'Battre œufs. Ajouter saumon et épinards. Cuire omelette.'},
+{id:120,name:'Poulet-boulgour',type:'Déjeuner',kcal:500,p:38,c:48,f:16,min:20,budget:'faible',ing:['150g poulet','80g boulgour','Tomates','Concombre','Citron'],steps:'Cuire boulgour. Griller poulet. Mélanger avec légumes et citron.'},
+/* ===== EXPRESS <15 MIN (121-135) ===== */
+{id:121,name:'Wrap thon-avocat express',type:'Déjeuner',kcal:420,p:28,c:38,f:18,min:5,budget:'faible',ing:['1 tortilla','1 boîte thon','1/2 avocat','Salade'],steps:'Écraser thon. Garnir tortilla. Rouler.'},
+{id:122,name:'Pâtes thon express',type:'Déjeuner',kcal:480,p:28,c:62,f:12,min:10,budget:'faible',ing:['100g pâtes','1 boîte thon','200g tomates','Ail'],steps:'Cuire pâtes. Revenir ail, tomates, thon. Mélanger.'},
+{id:123,name:'Salade œufs-avocat',type:'Déjeuner',kcal:380,p:20,c:12,f:28,min:8,budget:'faible',ing:['2 œufs','1 avocat','Salade','Huile, citron'],steps:'Cuire œufs durs. Couper avocat. Mélanger avec salade.'},
+{id:124,name:'Omelette fromage express',type:'Dîner',kcal:340,p:26,c:2,f:26,min:5,budget:'faible',ing:['3 œufs','30g fromage','Herbes'],steps:'Battre œufs. Cuire omelette. Ajouter fromage. Plier.'},
+{id:125,name:'Toast ricotta-tomate',type:'Collation',kcal:210,p:10,c:22,f:8,min:3,budget:'faible',ing:['1 tranche pain','30g ricotta','Tomate','Basilic'],steps:'Toaster pain, tartiner ricotta, ajouter tomate.'},
+{id:126,name:'Smoothie épinards-fruits',type:'Petit-déj',kcal:220,p:8,c:38,f:4,min:3,budget:'faible',ing:['1 poignée épinards','1 banane','200ml lait'],steps:'Mixer tous les ingrédients.'},
+{id:127,name:'Yaourt-fruits secs express',type:'Petit-déj',kcal:240,p:14,c:22,f:10,min:2,budget:'faible',ing:['200g yaourt','20g amandes','1 c.à.s miel'],steps:'Verser yaourt, ajouter amandes et miel.'},
+{id:128,name:'Croque-rapide',type:'Déjeuner',kcal:380,p:22,c:30,f:18,min:5,budget:'faible',ing:['2 tranches pain','50g jambon','30g fromage'],steps:'Garnir pain. Cuire 3 min à la poêle.'},
+{id:129,name:'Salade tomate-mozza',type:'Déjeuner',kcal:320,p:16,c:8,f:24,min:5,budget:'moyen',ing:['2 tomates','100g mozzarella','Basilic','Huile olive'],steps:'Couper tomates et mozza. Mélanger avec basilic et huile.'},
+{id:130,name:'Riz au thon express',type:'Déjeuner',kcal:460,p:24,c:58,f:14,min:10,budget:'faible',ing:['80g riz','1 boîte thon','Maïs','Mayo'],steps:'Cuire riz. Refroidir. Mélanger avec thon, maïs, mayo.'},
+{id:131,name:'Soupe instantanée + pain',type:'Dîner',kcal:280,p:8,c:42,f:8,min:5,budget:'faible',ing:['1 soupe instantanée','2 tranches pain','Fromage'],steps:'Chauffer soupe. Servir avec pain et fromage.'},
+{id:132,name:'Poulet-micro-ondes-légumes',type:'Dîner',kcal:420,p:38,c:18,f:22,min:8,budget:'faible',ing:['150g poulet cuit','150g légumes surgelés','Huile olive'],steps:'Chauffer poulet et légumes au micro-ondes 5 min. Assaisonner.'},
+{id:133,name:'Œufs-brouillés-toast',type:'Petit-déj',kcal:320,p:20,c:22,f:16,min:5,budget:'faible',ing:['2 œufs','1 tranche pain','Beurre'],steps:'Brouiller œufs. Toaster pain. Servir.'},
+{id:134,name:'Wrap végétarien express',type:'Déjeuner',kcal:340,p:14,c:42,f:12,min:5,budget:'faible',ing:['1 tortilla','Houmous','Carottes râpées','Salade'],steps:'Tartiner houmous. Garnir légumes. Rouler.'},
+{id:135,name:'Plateau fromage-fruits',type:'Collation',kcal:280,p:16,c:18,f:18,min:2,budget:'moyen',ing:['50g fromage','1 pomme','15g noix'],steps:'Disposer sur assiette. Manger.'}
+];
+
+/* ===== RUN PLANS ===== */
+const RUN_PLANS={
+'5k_deb':{name:'5K Débutant',weeks:8,sessions:[{day:'Lun',type:'Footing',detail:'20 min marche rapide + 10 min footing'},{day:'Mer',type:'Fractionné',detail:'6× (1 min course / 2 min marche)'},{day:'Ven',type:'Footing',detail:'15 min footing continu'},{day:'Dim',type:'Long',detail:'25 min marche + course alternée'}]},
+'5k_int':{name:'5K Intermédiaire',weeks:8,sessions:[{day:'Mar',type:'Fractionné',detail:'8× 400m à 90% VMA, récup 1min'},{day:'Jeu',type:'Tempo',detail:'20 min à allure 10K'},{day:'Sam',type:'Long',detail:'45 min footing facile'}]},
+'10k_deb':{name:'10K Débutant',weeks:8,sessions:[{day:'Lun',type:'Footing',detail:'20 min facile'},{day:'Mer',type:'Fractionné',detail:'5× (2 min course / 1 min marche)'},{day:'Ven',type:'Footing',detail:'25 min facile'},{day:'Dim',type:'Long',detail:'35 min progressif'}]},
+'10k_int':{name:'10K Intermédiaire',weeks:8,sessions:[{day:'Mar',type:'Fractionné',detail:'10× 400m VMA, récup 45s'},{day:'Jeu',type:'Tempo',detail:'25 min allure 10K'},{day:'Sam',type:'Long',detail:'60 min footing'}]},
+'semi':{name:'Semi-marathon',weeks:12,sessions:[{day:'Mar',type:'Fractionné',detail:'12× 400m VMA'},{day:'Jeu',type:'Tempo',detail:'30 min allure semi'},{day:'Sam',type:'Long',detail:'1h15 progressif'},{day:'Dim',type:'Récup',detail:'30 min facile'}]},
+'marathon':{name:'Marathon',weeks:16,sessions:[{day:'Mar',type:'Fractionné',detail:'15× 400m VMA'},{day:'Mer',type:'Tempo',detail:'40 min allure semi'},{day:'Ven',type:'Footing',detail:'45 min facile'},{day:'Dim',type:'Long',detail:'2h progressif'}]}
+};
+
+/* ===== STRETCHES ===== */
+const STRETCHES=[
+{name:'Étirement ischio-jambiers',dur:'30s × 2',desc:'Assis jambe tendue, pencher le buste vers l\'avant.'},
+{name:'Étirement quadriceps',dur:'30s × 2',desc:'Debout, ramener le talon vers la fesse.'},
+{name:'Étirement mollets',dur:'30s × 2',desc:'Face au mur, jambe arrière tendue, pousser le talon au sol.'},
+{name:'Étirement dos (chat-vache)',dur:'10 reps',desc:'À quatre pattes, alterner dos rond / dos creux.'},
+{name:'Étirement épaules',dur:'30s × 2',desc:'Bras croisé devant la poitrine, ramener avec l\'autre bras.'},
+{name:'Étirement psoas',dur:'30s × 2',desc:'En fente, avancer légèrement le bassin.'},
+{name:'Étirement pectoraux',dur:'30s × 2',desc:'Bras en croix contre un mur, tourner le buste.'},
+{name:'Posture enfant',dur:'1 min',desc:'À genoux, front au sol, bras tendus devant.'},
+{name:'Rotation cervicale',dur:'30s',desc:'Tourner doucement la tête de gauche à droite.'},
+{name:'Étirement fessiers',dur:'30s × 2',desc:'Assis, croiser la jambe, ramener le genou vers la poitrine.'}
+];
+
+/* ===== PROGRAM TEMPLATES ===== */
+const PROGRAM_TEMPLATES={
+'debutant_3j':{name:'Débutant — 3 jours/semaine',days:[{name:'Full Body A',exercises:['bodyweight-squat','pushup','row-band','plank']},{name:'Full Body B',exercises:['goblet-squat','db-press','row-db','glute-bridge']},{name:'Full Body C',exercises:['lunge','pike-pushup','band-curl','crunch']}]},
+'inter_4j':{name:'Intermédiaire — 4 jours/semaine',days:[{name:'Push',exercises:['bench','incline-db','ohp','lateral-raise','pushdown']},{name:'Pull',exercises:['deadlift','pullup','row-barbell','curl-barbell','hammer-curl']},{name:'Jambes',exercises:['squat','leg-press','leg-curl','calf-raise','plank']},{name:'Full Body',exercises:['front-squat','dips-tri','row-db','db-press','crunch']}]},
+'avance_5j':{name:'Avancé — 5 jours/semaine',days:[{name:'Pecs + Triceps',exercises:['bench','incline-db','db-fly','dips-pec','pushdown','skull']},{name:'Dos + Biceps',exercises:['deadlift','pullup','row-barbell','lat-pulldown','curl-barbell','hammer-curl']},{name:'Jambes',exercises:['squat','front-squat','leg-press','leg-curl','calf-raise']},{name:'Épaules',exercises:['ohp','db-press','lateral-raise','front-raise','band-pull']},{name:'Bras + Abdos',exercises:['curl-db','pushdown','hammer-curl','skull','plank','russian-twist']}]}
+};
+
+/* ===== HELPERS ===== */
+function today(){return new Date().toISOString().slice(0,10)}
+function fmtDate(d){return new Date(d).toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})}
+function round(n,dp=0){return Math.round(n*Math.pow(10,dp))/Math.pow(10,dp)}
+function $id(id){return document.getElementById(id)}
+function $(sel){return document.querySelector(sel)}
+function $$(sel){return document.querySelectorAll(sel)}
+function showToast(msg){const t=$id('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2200)}
+function openModal(title,html){$id('modalTitle').textContent=title;$id('modalBody').innerHTML=html;$id('modalOverlay').classList.add('open')}
+function closeModal(){$id('modalOverlay').classList.remove('open')}
+
+/* ===== STATE ===== */
+const state={
+profile:Store.get('profile',{weight:70,height:175,age:25,sex:'m',activity:1.375,goal:'recomp'}),
+foodLog:Store.get('foodLog',{}),
+sessions:Store.get('sessions',[]),
+sleepLog:Store.get('sleepLog',{}),
+runs:Store.get('runs',[]),
+streak:Store.get('streak',0),
+lastActive:Store.get('lastActive',null)
+};
+function saveProfile(){Store.set('profile',state.profile)}
+function saveFoodLog(){Store.set('foodLog',state.foodLog)}
+function saveSessions(){Store.set('sessions',state.sessions)}
+function saveSleepLog(){Store.set('sleepLog',state.sleepLog)}
+function saveRuns(){Store.set('runs',state.runs)}
+function updateStreak(){const t=today();if(state.lastActive!==t){const yesterday=new Date(Date.now()-86400000).toISOString().slice(0,10);if(state.lastActive===yesterday)state.streak++;else state.streak=1;state.lastActive=t;Store.set('streak',state.streak);Store.set('lastActive',t)}}
+
+/* ===== CALCULATORS ===== */
+function calcBMR(){const p=state.profile;if(p.sex==='m')return 10*p.weight+6.25*p.height-5*p.age+5;return 10*p.weight+6.25*p.height-5*p.age-161}
+function calcTDEE(){return calcBMR()*state.profile.activity}
+function calcIMC(){return state.profile.weight/Math.pow(state.profile.height/100,2)}
+function imcLabel(v){if(v<18.5)return{t:'Insuffisance',c:'yellow'};if(v<25)return{t:'Normal',c:'green'};if(v<30)return{t:'Surpoids',c:'yellow'};return{t:'Obésité',c:'red'}}
+function calcMacros(){const tdee=calcTDEE();const goal=state.profile.goal;let kcal=tdee;if(goal==='cut')kcal=tdee-400;else if(goal==='bulk')kcal=tdee+300;const proteinPerKg=goal==='cut'?2.2:goal==='bulk'?1.8:2.0;const protein=state.profile.weight*proteinPerKg;const fat=kcal*0.28/9;const carbs=(kcal-protein*4-fat*9)/4;return{kcal:Math.round(kcal),protein:Math.round(protein),carbs:Math.round(carbs),fat:Math.round(fat)}}
+function calcSleepCycles(wakeOrBed,isWakeTime){const cycles=[3,4,5,6,7];const results=[];cycles.forEach(n=>{const mins=n*90+15;let date=new Date();const[h,m]=wakeOrBed.split(':').map(Number);if(isWakeTime){date.setHours(h,m,0,0);date.setMinutes(date.getMinutes()-mins);results.push({cycles:n,time:date.toTimeString().slice(0,5),sleep:(n*1.5).toFixed(1)})}else{date.setHours(h,m,0,0);date.setMinutes(date.getMinutes()+mins);results.push({cycles:n,time:date.toTimeString().slice(0,5),sleep:(n*1.5).toFixed(1)})}});return results}
+
+/* ===== RENDER DASHBOARD ===== */
+function renderDashboard(){updateStreak();$id('streakDisplay').textContent='🔥 '+state.streak+'j';$id('todayDate').textContent=fmtDate(today());const macros=calcMacros();const todayFood=state.foodLog[today()]||[];const eaten=todayFood.reduce((a,m)=>({kcal:a.kcal+m.kcal,p:a.p+m.p,c:a.c+m.c,f:a.f+m.f}),{kcal:0,p:0,c:0,f:0});const remaining={kcal:Math.max(0,macros.kcal-eaten.kcal),p:Math.max(0,macros.protein-eaten.p),c:Math.max(0,macros.carbs-eaten.c),f:Math.max(0,macros.fat-eaten.f)};const sleepLast=state.sleepLog[today()];const lastSession=state.sessions[0];const lastRun=state.runs[0];const imc=calcIMC();const imcInfo=imcLabel(imc);let html='';html+=`<div class="card-hero"><div class="stat-label">Calories aujourd'hui</div><div style="display:flex;align-items:baseline;gap:6px;margin:6px 0"><div class="stat-big" style="color:var(--red)">${remaining.kcal}</div><div style="color:var(--muted);font-size:13px">/ ${macros.kcal} kcal restantes</div></div><div class="bar"><div class="bar-fill" style="width:${Math.min(100,eaten.kcal/macros.kcal*100)}%"></div></div><div style="display:flex;gap:8px;margin-top:10px;font-size:12px"><div>🥩 <b>${Math.round(eaten.p)}</b>/${macros.protein}g</div><div>🍞 <b>${Math.round(eaten.c)}</b>/${macros.carbs}g</div><div>🥑 <b>${Math.round(eaten.f)}</b>/${macros.fat}g</div></div></div>`;html+='<div class="grid grid-2">';html+=`<div class="stat-card"><div class="stat-label">IMC</div><div class="stat-big" style="font-size:24px">${round(imc,1)}</div><div class="badge badge-${imcInfo.c}" style="margin-top:4px">${imcInfo.t}</div></div>`;html+=`<div class="stat-card"><div class="stat-label">Sommeil</div><div class="stat-big" style="font-size:24px">${sleepLast?sleepLast.hours.toFixed(1)+'h':'—'}</div><div style="font-size:11px;color:var(--muted);margin-top:4px">${sleepLast?'cette nuit':'non enregistré'}</div></div>`;html+='</div>';html+='<h2>Activité récente</h2>';if(lastSession){html+=`<div class="list-item"><div style="font-size:24px">🏋️</div><div class="list-item-content"><div class="list-item-title">${lastSession.name}</div><div class="list-item-sub">${lastSession.exercises.length} exercices · ${lastSession.date}</div></div></div>`}if(lastRun){html+=`<div class="list-item"><div style="font-size:24px">🏃</div><div class="list-item-content"><div class="list-item-title">Course ${lastRun.distance} km</div><div class="list-item-sub">${lastRun.duration} min · ${lastRun.pace} · ${lastRun.date}</div></div></div>`}if(!lastSession&&!lastRun){html+='<div class="empty"><div class="ico">🎯</div><div class="empty-title">Commence ton parcours</div><div class="empty-text">Enregistre ta première séance ou course</div></div>'}html+='<h2>Actions rapides</h2>';html+=`<div class="grid"><button class="btn" onclick="switchTab('nutrition');setNutriTab('log')">➕ Ajouter un repas</button><button class="btn" onclick="switchTab('muscu');setMuscuTab('session')">🏋️ Nouvelle séance</button><button class="btn" onclick="switchTab('course');setCourseTab('gps')">📍 Lancer une course</button><button class="btn" onclick="switchTab('sommeil');setSommeilTab('calc')">💤 Calculer mon sommeil</button></div>`;$id('dashboardContent').innerHTML=html}
+
+/* ===== RENDER MUSCU ===== */
+let muscuTab='library';
+function setMuscuTab(t){muscuTab=t;$$('#muscuPills .pill').forEach(p=>p.classList.toggle('active',p.dataset.mt===t));renderMuscu()}
+function renderMuscu(){const el=$id('muscuContent');if(muscuTab==='library')renderExerciseLibrary(el);else if(muscuTab==='program')renderProgramGenerator(el);else if(muscuTab==='session')renderSessionLogger(el);else if(muscuTab==='history')renderSessionHistory(el)}
+function renderExerciseLibrary(el){const muscles=['Tous','Pectoraux','Dos','Épaules','Biceps','Triceps','Jambes','Fessiers','Abdos','Full body'];const locs=['Tous','salle','maison'];const muscle=window._muscleFilter||'Tous';const loc=window._locFilter||'Tous';let filtered=EXERCISES;if(muscle!=='Tous')filtered=filtered.filter(e=>e.muscle===muscle);if(loc!=='Tous')filtered=filtered.filter(e=>e.loc===loc);let html='';html+='<div class="form-group"><label>Muscle</label><select onchange="window._muscleFilter=this.value;renderMuscu()">'+muscles.map(m=>`<option ${m===muscle?'selected':''}>${m}</option>`).join('')+'</select></div>';html+='<div class="form-group"><label>Lieu</label><select onchange="window._locFilter=this.value;renderMuscu()">'+locs.map(l=>`<option value="${l}" ${l===loc?'selected':''}>${l==='Tous'?'Tous':l==='salle'?'Salle de sport':'Maison'}</option>`).join('')+'</select></div>';html+=`<p style="color:var(--muted);font-size:12px;margin:8px 0">${filtered.length} exercice(s)</p>`;filtered.forEach(ex=>{html+=`<div class="list-item" onclick="showExercise('${ex.id}')" style="cursor:pointer"><div class="list-item-content"><div class="list-item-title">${ex.name}</div><div class="list-item-sub">${ex.muscle} · ${ex.equip} · ${ex.loc==='salle'?'Salle':'Maison'}</div></div><div style="font-size:18px;color:var(--red)">›</div></div>`});el.innerHTML=html}
+function showExercise(id){const ex=EXERCISES.find(e=>e.id===id);if(!ex)return;const html=`<div class="tags"><span class="tag">${ex.muscle}</span><span class="tag">${ex.equip}</span><span class="tag">${ex.loc==='salle'?'Salle':'Maison'}</span></div><div class="instruction" style="margin-top:16px"><strong>Comment faire :</strong><br>${ex.instr}</div><div class="instruction"><strong>💡 Conseil :</strong><br>${ex.tips}</div><button class="btn btn-primary btn-block" onclick="closeModal()" style="margin-top:16px">Compris</button>`;openModal(ex.name,html)}
+function renderProgramGenerator(el){el.innerHTML=`<div class="card"><h3>Génère ton programme</h3><p style="color:var(--muted);font-size:13px;margin-bottom:12px">Un programme adapté à ton niveau sur la semaine.</p><div class="form-group"><label>Niveau</label><select id="progLevel"><option value="debutant_3j">Débutant (3 jours)</option><option value="inter_4j">Intermédiaire (4 jours)</option><option value="avance_5j">Avancé (5 jours)</option></select></div><button class="btn btn-primary btn-block" onclick="generateProgram()">⚡ Générer</button></div><div id="programResult"></div>`}
+function generateProgram(){const level=$id('progLevel').value;const tmpl=PROGRAM_TEMPLATES[level];if(!tmpl)return;let html='';tmpl.days.forEach((day,i)=>{html+=`<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><h3 style="margin:0">${day.name}</h3><span class="badge badge-red">Jour ${i+1}</span></div>`;day.exercises.forEach(exId=>{const ex=EXERCISES.find(e=>e.id===exId);if(ex){html+=`<div style="padding:8px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px"><div style="flex:1;font-size:13px">${ex.name}</div><span class="tag">${ex.equip}</span></div>`}});html+=`<button class="btn btn-sm" style="margin-top:10px" onclick="startSession('${day.name}','${day.exercises.join(',')}')">🚀 Démarrer cette séance</button>`;html+='</div>'});$id('programResult').innerHTML=html}
+function startSession(name,exerciseIds){closeModal();const ids=exerciseIds.split(',');const todaySession={id:Date.now(),date:today(),name:name,exercises:ids.map(id=>{const ex=EXERCISES.find(e=>e.id===id);return{id,name:ex?ex.name:id,sets:[]}})};window._activeSession=todaySession;setMuscuTab('session')}
+function renderSessionLogger(el){const sess=window._activeSession;if(!sess){el.innerHTML=`<div class="empty"><div class="ico">🏋️</div><div class="empty-title">Aucune séance en cours</div><div class="empty-text">Génère un programme ou démarre une séance libre</div><button class="btn btn-primary" style="margin-top:16px" onclick="startFreeSession()">Séance libre</button></div>`;return}let html=`<div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><div><div class="stat-label">Séance en cours</div><h3 style="margin:2px 0 0 0">${sess.name}</h3></div><span class="badge badge-red">${sess.exercises.length} ex.</span></div></div>`;sess.exercises.forEach((ex,exIdx)=>{html+=`<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><h3 style="margin:0;font-size:15px">${ex.name}</h3><button class="btn btn-sm" onclick="addSet(${exIdx})">+ Série</button></div>`;if(ex.sets.length===0){html+='<p style="color:var(--muted);font-size:12px">Aucune série. Clique sur "+ Série" pour commencer.</p>'}else{ex.sets.forEach((s,i)=>{html+=`<div class="list-item" style="padding:8px 10px"><div class="list-item-content"><div style="font-size:13px"><b>Série ${i+1}</b> · ${s.reps} reps @ ${s.weight} kg</div></div><button class="btn btn-sm" onclick="delSet(${exIdx},${i})">✕</button></div>`})}html+='</div>'});html+=`<button class="btn btn-primary btn-block" onclick="finishSession()" style="margin-bottom:8px">✓ Terminer la séance</button><button class="btn btn-block" onclick="cancelSession()">Annuler</button>`;el.innerHTML=html}
+function startFreeSession(){const name=prompt('Nom de la séance (ex: Push):','Séance libre');if(!name)return;window._activeSession={id:Date.now(),date:today(),name,exercises:[]};renderMuscu()}
+function addSet(exIdx){const sess=window._activeSession;if(!sess)return;const ex=sess.exercises[exIdx];const reps=prompt('Combien de répétitions ?','10');if(!reps)return;const weight=prompt('Quel poids (kg) ?','0');if(weight===null)return;ex.sets.push({reps:parseInt(reps),weight:parseFloat(weight)});renderMuscu()}
+function delSet(exIdx,setIdx){const sess=window._activeSession;if(!sess)return;sess.exercises[exIdx].sets.splice(setIdx,1);renderMuscu()}
+function finishSession(){const sess=window._activeSession;if(!sess)return;state.sessions.unshift(sess);saveSessions();window._activeSession=null;showToast('Séance enregistrée ✓');renderDashboard();setMuscuTab('history')}
+function cancelSession(){if(!confirm('Annuler cette séance ?'))return;window._activeSession=null;renderMuscu()}
+function renderSessionHistory(el){if(state.sessions.length===0){el.innerHTML='<div class="empty"><div class="ico">📋</div><div class="empty-title">Aucune séance enregistrée</div><div class="empty-text">Tes séances apparaîtront ici</div></div>';return}let html='';state.sessions.slice(0,20).forEach(s=>{const totalSets=s.exercises.reduce((a,e)=>a+e.sets.length,0);const totalVolume=s.exercises.reduce((a,e)=>a+e.sets.reduce((b,st)=>b+st.reps*st.weight,0),0);html+=`<div class="list-item"><div class="list-item-content"><div class="list-item-title">${s.name}</div><div class="list-item-sub">${s.date} · ${s.exercises.length} ex · ${totalSets} séries · ${round(totalVolume)} kg</div></div></div>`});el.innerHTML=html}
+
+/* ===== RENDER NUTRITION ===== */
+let nutriTab='log';
+function setNutriTab(t){nutriTab=t;$$('#nutriPills .pill').forEach(p=>p.classList.toggle('active',p.dataset.nt===t));renderNutrition()}
+function renderNutrition(){const el=$id('nutritionContent');if(nutriTab==='log')renderFoodLog(el);else if(nutriTab==='calc')renderNutriCalc(el);else if(nutriTab==='recipes')renderRecipes(el)}
+function renderFoodLog(el){const macros=calcMacros();const todayFood=state.foodLog[today()]||[];const eaten=todayFood.reduce((a,m)=>({kcal:a.kcal+m.kcal,p:a.p+m.p,c:a.c+m.c,f:a.f+m.f}),{kcal:0,p:0,c:0,f:0});const remaining={kcal:Math.max(0,macros.kcal-eaten.kcal),p:Math.max(0,macros.protein-eaten.p),c:Math.max(0,macros.carbs-eaten.c),f:Math.max(0,macros.fat-eaten.f)};let html=`<div class="card-hero"><div class="stat-label">Restant aujourd'hui</div><div class="stat-big" style="color:var(--red);margin:4px 0">${remaining.kcal} kcal</div><div class="macro-grid"><div class="macro-box"><div class="macro-val">${Math.round(eaten.p)}/${macros.protein}</div><div class="macro-lbl">🥩 Prot.</div></div><div class="macro-box"><div class="macro-val">${Math.round(eaten.c)}/${macros.carbs}</div><div class="macro-lbl">🍞 Gluc.</div></div><div class="macro-box"><div class="macro-val">${Math.round(eaten.f)}/${macros.fat}</div><div class="macro-lbl">🥑 Lip.</div></div><div class="macro-box"><div class="macro-val">${Math.round(eaten.kcal)}</div><div class="macro-lbl">Total</div></div></div></div>`;html+=`<button class="btn btn-primary btn-block" onclick="addMeal()" style="margin-bottom:16px">➕ Ajouter un repas</button>`;html+='<h2>Repas d\'aujourd\'hui</h2>';if(todayFood.length===0){html+='<div class="empty"><div class="ico">🍽️</div><div class="empty-title">Aucun repas</div><div class="empty-text">Ajoute ton premier repas</div></div>'}else{todayFood.forEach((m,i)=>{html+=`<div class="list-item"><div class="list-item-content"><div class="list-item-title">${m.name}</div><div class="list-item-sub">${Math.round(m.kcal)} kcal · P${Math.round(m.p)} · G${Math.round(m.c)} · L${Math.round(m.f)}</div></div><button class="btn btn-sm" onclick="delMeal(${i})">✕</button></div>`})}el.innerHTML=html}
+function addMeal(){const html=`<p style="color:var(--muted);font-size:13px;margin-bottom:12px">Choisis une recette ou saisis manuellement.</p><button class="btn btn-primary btn-block" onclick="closeModal();setNutriTab('recipes')" style="margin-bottom:8px">📖 Choisir dans les recettes</button><button class="btn btn-block" onclick="manualMeal()">✍️ Saisie manuelle</button>`;openModal('Ajouter un repas',html)}
+function manualMeal(){closeModal();const name=prompt('Nom du repas:','Repas');if(!name)return;const kcal=parseInt(prompt('Calories (kcal):','500'));if(!kcal)return;const p=parseFloat(prompt('Protéines (g):','30'));const c=parseFloat(prompt('Glucides (g):','50'));const f=parseFloat(prompt('Lipides (g):','15'));const t=today();if(!state.foodLog[t])state.foodLog[t]=[];state.foodLog[t].push({name,kcal,p:p||0,c:c||0,f:f||0});saveFoodLog();showToast('Repas ajouté ✓');renderNutrition();renderDashboard()}
+function delMeal(i){const t=today();state.foodLog[t].splice(i,1);saveFoodLog();renderNutrition();renderDashboard()}
+function addRecipeToLog(recipeId){const r=RECIPES.find(x=>x.id===recipeId);if(!r)return;const t=today();if(!state.foodLog[t])state.foodLog[t]=[];state.foodLog[t].push({name:r.name,kcal:r.kcal,p:r.p,c:r.c,f:r.f});saveFoodLog();showToast('Repas ajouté ✓');closeModal();renderNutrition();renderDashboard()}
+function renderNutriCalc(el){const macros=calcMacros();const imc=calcIMC();const imcInfo=imcLabel(imc);el.innerHTML=`<div class="card"><h3>Ton profil</h3><div class="form-row"><div class="form-group"><label>Poids (kg)</label><input type="number" id="pWeight" value="${state.profile.weight}" step="0.5"></div><div class="form-group"><label>Taille (cm)</label><input type="number" id="pHeight" value="${state.profile.height}"></div></div><div class="form-row"><div class="form-group"><label>Âge</label><input type="number" id="pAge" value="${state.profile.age}"></div><div class="form-group"><label>Sexe</label><select id="pSex"><option value="m" ${state.profile.sex==='m'?'selected':''}>Homme</option><option value="f" ${state.profile.sex==='f'?'selected':''}>Femme</option></select></div></div><div class="form-group"><label>Activité</label><select id="pActivity"><option value="1.2" ${state.profile.activity==1.2?'selected':''}>Sédentaire</option><option value="1.375" ${state.profile.activity==1.375?'selected':''}>Légère</option><option value="1.55" ${state.profile.activity==1.55?'selected':''}>Modérée</option><option value="1.725" ${state.profile.activity==1.725?'selected':''}>Intense</option></select></div><div class="form-group"><label>Objectif</label><select id="pGoal"><option value="cut" ${state.profile.goal==='cut'?'selected':''}>Perte de poids</option><option value="recomp" ${state.profile.goal==='recomp'?'selected':''}>Recomposition</option><option value="bulk" ${state.profile.goal==='bulk'?'selected':''}>Prise de masse</option></select></div><button class="btn btn-primary btn-block" onclick="saveProfileAndCalc()">Calculer</button></div><div class="card-hero"><div class="stat-label">IMC</div><div class="stat-big">${round(imc,1)}</div><div class="badge badge-${imcInfo.c}" style="margin-top:6px">${imcInfo.t}</div></div><div class="card"><h3>Objectifs quotidiens</h3><div class="data-row"><span class="label">Calories</span><span class="value">${macros.kcal} kcal</span></div><div class="data-row"><span class="label">Protéines</span><span class="value">${macros.protein} g</span></div><div class="data-row"><span class="label">Glucides</span><span class="value">${macros.carbs} g</span></div><div class="data-row"><span class="label">Lipides</span><span class="value">${macros.fat} g</span></div></div>`}
+function saveProfileAndCalc(){state.profile={weight:parseFloat($id('pWeight').value),height:parseFloat($id('pHeight').value),age:parseInt($id('pAge').value),sex:$id('pSex').value,activity:parseFloat($id('pActivity').value),goal:$id('pGoal').value};saveProfile();renderNutriCalc($id('nutritionContent'));renderDashboard();showToast('Profil mis à jour ✓')}
+function renderRecipes(el){const types=['Toutes','Petit-déj','Déjeuner','Dîner','Collation'];const budgets=['Tous','faible','moyen'];const type=window._recipeType||'Toutes';const budget=window._recipeBudget||'Tous';let filtered=RECIPES;if(type!=='Toutes')filtered=filtered.filter(r=>r.type===type);if(budget!=='Tous')filtered=filtered.filter(r=>r.budget===budget);let html=`<div class="form-row"><div class="form-group"><label>Type</label><select onchange="window._recipeType=this.value;renderNutrition()">${types.map(t=>`<option ${t===type?'selected':''}>${t}</option>`).join('')}</select></div><div class="form-group"><label>Budget</label><select onchange="window._recipeBudget=this.value;renderNutrition()">${budgets.map(b=>`<option value="${b}" ${b===budget?'selected':''}>${b==='Tous'?'Tous':b==='faible'?'Petit budget':'Moyen'}</option>`).join('')}</select></div></div>`;html+=`<p style="color:var(--muted);font-size:12px;margin:8px 0">${filtered.length} recette(s)</p>`;filtered.forEach(r=>{html+=`<div class="list-item" onclick="showRecipe(${r.id})" style="cursor:pointer"><div class="list-item-content"><div class="list-item-title">${r.name}</div><div class="list-item-sub">${r.kcal} kcal · ${r.min} min · ${r.budget==='faible'?'💰':'💰💰'} · ${r.type}</div></div><div style="font-size:18px;color:var(--red)">›</div></div>`});el.innerHTML=html}
+function showRecipe(id){const r=RECIPES.find(x=>x.id===id);if(!r)return;const html=`<div class="tags"><span class="tag">${r.type}</span><span class="tag">${r.min} min</span><span class="tag">${r.budget==='faible'?'💰 Petit budget':'💰💰 Budget moyen'}</span></div><div class="macro-grid" style="margin-top:14px"><div class="macro-box"><div class="macro-val">${r.kcal}</div><div class="macro-lbl">kcal</div></div><div class="macro-box"><div class="macro-val">${r.p}g</div><div class="macro-lbl">Prot.</div></div><div class="macro-box"><div class="macro-val">${r.c}g</div><div class="macro-lbl">Gluc.</div></div><div class="macro-box"><div class="macro-val">${r.f}g</div><div class="macro-lbl">Lip.</div></div></div><h3 style="margin-top:16px">Ingrédients</h3><ul style="margin:8px 0;padding-left:20px;font-size:14px">${r.ing.map(i=>`<li>${i}</li>`).join('')}</ul><h3>Préparation</h3><div class="instruction" style="margin-top:8px">${r.steps}</div><button class="btn btn-primary btn-block" onclick="addRecipeToLog(${r.id})" style="margin-top:16px">✓ Ajouter au journal</button>`;openModal(r.name,html)}
+
+/* ===== RENDER SOMMEIL ===== */
+let sommeilTab='calc';
+function setSommeilTab(t){sommeilTab=t;$$('#sommeilPills .pill').forEach(p=>p.classList.toggle('active',p.dataset.st===t));renderSommeil()}
+function renderSommeil(){const el=$id('sommeilContent');if(sommeilTab==='calc')renderSleepCalc(el);else if(sommeilTab==='log')renderSleepLog(el);else if(sommeilTab==='stretch')renderStretches(el)}
+function renderSleepCalc(el){el.innerHTML=`<div class="card"><h3>Calculateur de sommeil</h3><p style="color:var(--muted);font-size:13px;margin-bottom:12px">Basé sur des cycles de 90 min.</p><div class="form-group"><label>Je veux...</label><select id="sleepMode" onchange="updateSleepCalc()"><option value="wake">Me réveiller à</option><option value="bed">Me coucher à</option></select></div><div class="form-group"><label>Heure</label><input type="time" id="sleepTime" value="07:00" onchange="updateSleepCalc()"></div></div><div id="sleepResult"></div>`;updateSleepCalc()}
+function updateSleepCalc(){const mode=$id('sleepMode').value;const time=$id('sleepTime').value;if(!time)return;const results=calcSleepCycles(time,mode==='wake');let html=`<h2>${mode==='wake'?'Couche-toi à':'Lève-toi à'}</h2>`;results.forEach(r=>{html+=`<div class="list-item"><div class="list-item-content"><div class="list-item-title" style="font-size:20px;color:var(--red)">${r.time}</div><div class="list-item-sub">${r.cycles} cycles · ${r.sleep}h de sommeil</div></div></div>`});html+='<p style="color:var(--muted);font-size:12px;margin-top:12px">💡 5-6 cycles = idéal (7h30-9h). 4 cycles = minimum (6h).</p>';$id('sleepResult').innerHTML=html}
+function renderSleepLog(el){let html=`<button class="btn btn-primary btn-block" onclick="logSleep()" style="margin-bottom:16px">➕ Enregistrer ma nuit</button>`;const entries=Object.entries(state.sleepLog).sort().reverse();if(entries.length===0){html+='<div class="empty"><div class="ico">💤</div><div class="empty-title">Aucun sommeil enregistré</div></div>'}else{entries.slice(0,14).forEach(([date,s])=>{html+=`<div class="list-item"><div class="list-item-content"><div class="list-item-title">${s.hours.toFixed(1)} h de sommeil</div><div class="list-item-sub">${s.bedtime} → ${s.wakeTime} · ${fmtDate(date)}</div></div></div>`})}el.innerHTML=html}
+function logSleep(){const bed=prompt('Heure de coucher (HH:MM):','23:00');if(!bed)return;const wake=prompt('Heure de réveil (HH:MM):','07:00');if(!wake)return;const[bh,bm]=bed.split(':').map(Number);const[wh,wm]=wake.split(':').map(Number);let bedMins=bh*60+bm;let wakeMins=wh*60+wm;if(wakeMins<=bedMins)wakeMins+=24*60;const hours=(wakeMins-bedMins)/60;state.sleepLog[today()]={bedtime:bed,wakeTime:wake,hours};saveSleepLog();showToast('Sommeil enregistré ✓');renderSommeil();renderDashboard()}
+function renderStretches(el){let html='<p style="color:var(--muted);font-size:13px;margin-bottom:12px">Routine d\'étirements — 10 min.</p>';STRETCHES.forEach(s=>{html+=`<div class="card"><div style="display:flex;justify-content:space-between;margin-bottom:6px"><h3 style="margin:0;font-size:14px">${s.name}</h3><span class="badge badge-blue">${s.dur}</span></div><p style="font-size:13px;color:var(--muted);margin:0">${s.desc}</p></div>`});el.innerHTML=html}
+
+/* ===== RENDER COURSE ===== */
+let courseTab='plans';
+function setCourseTab(t){courseTab=t;$$('#coursePills .pill').forEach(p=>p.classList.toggle('active',p.dataset.ct===t));renderCourse()}
+function renderCourse(){const el=$id('courseContent');if(courseTab==='plans')renderRunPlans(el);else if(courseTab==='vma')renderVmaCalc(el);else if(courseTab==='gps')renderGps(el);else if(courseTab==='history')renderRunHistory(el)}
+function renderRunPlans(el){let html='<p style="color:var(--muted);font-size:13px;margin-bottom:12px">Choisis ton objectif.</p>';Object.entries(RUN_PLANS).forEach(([key,plan])=>{html+=`<div class="list-item" onclick="showRunPlan('${key}')" style="cursor:pointer"><div class="list-item-content"><div class="list-item-title">${plan.name}</div><div class="list-item-sub">${plan.weeks} semaines · ${plan.sessions.length} séances/sem</div></div><div style="font-size:18px;color:var(--red)">›</div></div>`});el.innerHTML=html}
+function showRunPlan(key){const p=RUN_PLANS[key];if(!p)return;let html=`<div class="tags"><span class="tag">${p.weeks} semaines</span><span class="tag">${p.sessions.length} séances/sem</span></div>`;html+='<h3 style="margin-top:16px">Séances types</h3>';p.sessions.forEach(s=>{html+=`<div class="list-item"><div class="list-item-content"><div class="list-item-title">${s.day} · ${s.type}</div><div class="list-item-sub">${s.detail}</div></div></div>`});html+='<p style="color:var(--muted);font-size:12px;margin-top:12px">💡 Répète ces séances chaque semaine en augmentant progressivement.</p>';openModal(p.name,html)}
+function renderVmaCalc(el){el.innerHTML=`<div class="card"><h3>Calculateur de VMA</h3><p style="color:var(--muted);font-size:13px;margin-bottom:12px">Test de Cooper : distance parcourue en 12 minutes.</p><div class="form-group"><label>Distance (mètres)</label><input type="number" id="vmaDist" placeholder="Ex: 2400"></div><button class="btn btn-primary btn-block" onclick="calcVMA()">Calculer</button></div><div id="vmaResult"></div>`}
+function calcVMA(){const dist=parseFloat($id('vmaDist').value);if(!dist||dist<=0){alert('Entre une distance valide');return}const vma=(dist*5)/1000;let html=`<div class="card-hero"><div class="stat-label">Ta VMA estimée</div><div class="stat-big" style="color:var(--red)">${round(vma,1)} km/h</div></div>`;html+=`<div class="card"><h3>Allures d'entraînement</h3><div class="data-row"><span class="label">Endurance fondamentale (65%)</span><span class="value">${round(vma*0.65,1)} km/h</span></div><div class="data-row"><span class="label">Allure marathon (75%)</span><span class="value">${round(vma*0.75,1)} km/h</span></div><div class="data-row"><span class="label">Allure semi (80%)</span><span class="value">${round(vma*0.80,1)} km/h</span></div><div class="data-row"><span class="label">Allure 10K (85%)</span><span class="value">${round(vma*0.85,1)} km/h</span></div><div class="data-row"><span class="label">Allure 5K (90%)</span><span class="value">${round(vma*0.90,1)} km/h</span></div><div class="data-row"><span class="label">Fractionné court (100%)</span><span class="value">${round(vma,1)} km/h</span></div></div>`;$id('vmaResult').innerHTML=html}
+
+/* ===== GPS ===== */
+let gpsWatcher=null;
+let gpsState={dist:0,startTime:null,points:[],running:false};
+function renderGps(el){const isSecure=window.isSecureContext;const warning=!isSecure?'<div class="status err" style="background:rgba(217,71,61,.1);border-left:3px solid var(--red);padding:10px;border-radius:8px;font-size:12px;margin-bottom:12px">⚠️ GPS indisponible en HTTP. Utilise le lien ship.page (HTTPS) sur ton téléphone.</div>':'';el.innerHTML=`${warning}<div class="card"><h3>Suivi GPS</h3><p style="color:var(--muted);font-size:13px;margin-bottom:12px">Autorise la géolocalisation quand demandé.</p><div class="stat-card" style="margin-bottom:12px"><div class="stat-label">Distance</div><div class="stat-big" id="gpsDist" style="color:var(--red)">0.00 km</div></div><div class="grid grid-2" style="margin-bottom:12px"><div class="stat-card"><div class="stat-label">Durée</div><div style="font-size:20px;font-weight:900" id="gpsDur">0:00</div></div><div class="stat-card"><div class="stat-label">Allure</div><div style="font-size:20px;font-weight:900" id="gpsPace">—</div></div></div><button class="btn btn-primary btn-block" id="gpsBtn" onclick="toggleGps()">▶ Démarrer</button></div><div id="gpsRunResult"></div>`}
+function toggleGps(){if(gpsState.running)stopGps();else startGps()}
+function startGps(){if(!navigator.geolocation){alert('GPS non disponible sur ce navigateur');return}gpsState={dist:0,startTime:Date.now(),points:[],running:true};$id('gpsBtn').textContent='⏹ Arrêter';$id('gpsBtn').style.background='var(--red)';gpsWatcher=navigator.geolocation.watchPosition(pos=>{const{latitude,longitude}=pos.coords;gpsState.points.push({lat:latitude,lng:longitude,t:Date.now()});if(gpsState.points.length>1){const a=gpsState.points[gpsState.points.length-2];const b=gpsState.points[gpsState.points.length-1];gpsState.dist+=haversine(a.lat,a.lng,b.lat,b.lng)}updateGpsDisplay()},err=>{console.warn('GPS error',err)}, {enableHighAccuracy:true,maximumAge:1000,timeout:10000});gpsState.timer=setInterval(updateGpsDisplay,1000)}
+function updateGpsDisplay(){const distKm=gpsState.dist;const elapsedSec=gpsState.startTime?(Date.now()-gpsState.startTime)/1000:0;const mins=Math.floor(elapsedSec/60);const secs=Math.floor(elapsedSec%60);const pace=distKm>0.01?(elapsedSec/60)/distKm:0;const paceMin=Math.floor(pace);const paceSec=Math.round((pace-paceMin)*60);const dEl=$id('gpsDist');if(dEl)dEl.textContent=distKm.toFixed(2)+' km';const durEl=$id('gpsDur');if(durEl)durEl.textContent=mins+':'+secs.toString().padStart(2,'0');const paceEl=$id('gpsPace');if(paceEl)paceEl.textContent=pace>0?paceMin+':'+paceSec.toString().padStart(2,'0'):'—'}
+function stopGps(){if(gpsWatcher){navigator.geolocation.clearWatch(gpsWatcher);gpsWatcher=null}if(gpsState.timer)clearInterval(gpsState.timer);const elapsedSec=(Date.now()-gpsState.startTime)/1000;const mins=Math.round(elapsedSec/60);const distKm=gpsState.dist;const pace=distKm>0.01?(elapsedSec/60)/distKm:0;gpsState.running=false;$id('gpsBtn').textContent='▶ Démarrer';$id('gpsBtn').style.background='';if(distKm>0.05){const paceMin=Math.floor(pace);const paceSec=Math.round((pace-paceMin)*60);const run={date:today(),distance:round(distKm,2),duration:mins,pace:paceMin+':'+paceSec.toString().padStart(2,'0')+' /km'};state.runs.unshift(run);saveRuns();showToast('Course enregistrée ✓');renderDashboard();$id('gpsRunResult').innerHTML=`<div class="card-hero" style="margin-top:16px"><div class="stat-label">Course terminée</div><div style="font-size:20px;font-weight:900;margin-top:6px">${run.distance} km · ${run.duration} min</div><div style="color:var(--muted);font-size:13px">Allure : ${run.pace}</div></div>`}}
+function haversine(lat1,lon1,lat2,lon2){const R=6371;const dLat=(lat2-lat1)*Math.PI/180;const dLon=(lon2-lon1)*Math.PI/180;const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;return 2*R*Math.atan2(Math.sqrt(a),Math.sqrt(1-a))}
+function renderRunHistory(el){if(state.runs.length===0){el.innerHTML='<div class="empty"><div class="ico">🏃</div><div class="empty-title">Aucune course enregistrée</div><div class="empty-text">Lance ton GPS pour commencer</div></div>';return}let html='';state.runs.slice(0,30).forEach(r=>{html+=`<div class="list-item"><div class="list-item-content"><div class="list-item-title">${r.distance} km · ${r.duration} min</div><div class="list-item-sub">${r.pace} · ${r.date}</div></div></div>`});el.innerHTML=html}
+
+/* ===== NAV ===== */
+function switchTab(tab){$$('.section').forEach(s=>s.classList.toggle('active',s.id==='tab-'+tab));$$('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));if(tab==='dashboard')renderDashboard();else if(tab==='muscu')renderMuscu();else if(tab==='nutrition')renderNutrition();else if(tab==='sommeil')renderSommeil();else if(tab==='course')renderCourse();window.scrollTo({top:0,behavior:'smooth'})}
+
+/* ===== INIT ===== */
+function init(){$$('.nav-btn').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));$$('#muscuPills .pill').forEach(p=>p.addEventListener('click',()=>setMuscuTab(p.dataset.mt)));$$('#nutriPills .pill').forEach(p=>p.addEventListener('click',()=>setNutriTab(p.dataset.nt)));$$('#sommeilPills .pill').forEach(p=>p.addEventListener('click',()=>setSommeilTab(p.dataset.st)));$$('#coursePills .pill').forEach(p=>p.addEventListener('click',()=>setCourseTab(p.dataset.ct)));$id('modalOverlay').addEventListener('click',e=>{if(e.target===$id('modalOverlay'))closeModal()});renderDashboard();switchTab('dashboard')}
+
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+</script>
+</body>
+</html>
